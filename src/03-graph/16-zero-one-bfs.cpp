@@ -1,6 +1,15 @@
 int n;
 const long long LINF = 0x3f3f3f3f3f3f3f3fLL;
-vector<vector<pair<int, long long>>> adj;
+struct Edge {
+    int from, to;
+    long long cost;
+
+    // reversed so the default priority_queue (max-heap) pops the smallest cost
+    bool operator<(const Edge& o) const {
+        return cost > o.cost;
+    }
+};
+vector<vector<Edge>> adj;
 vector<long long> dist;
 
 /**
@@ -16,13 +25,13 @@ void bfs_01(int src) {
     while (not dq.empty()) {
         int u = dq.front();
         dq.pop_front();
-        for (auto [v, w]: adj[u])
-            if (dist[u] + w < dist[v]) {
-                dist[v] = dist[u] + w;
-                if (w == 0)
-                    dq.push_front(v);
+        for (Edge e: adj[u])
+            if (dist[u] + e.cost < dist[e.to]) {
+                dist[e.to] = dist[u] + e.cost;
+                if (e.cost == 0)
+                    dq.push_front(e.to);
                 else
-                    dq.push_back(v);
+                    dq.push_back(e.to);
             }
     }
 }

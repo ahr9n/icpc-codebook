@@ -1,11 +1,11 @@
 int n;
 struct Edge {
-    int u, v;
-    long long w;
+    int from, to;
+    long long cost;
 
-    // reversed so the default priority_queue (max-heap) pops the smallest weight
+    // reversed so the default priority_queue (max-heap) pops the smallest cost
     bool operator<(const Edge& o) const {
-        return w > o.w;
+        return cost > o.cost;
     }
 };
 vector<Edge> edges;
@@ -24,10 +24,10 @@ vector<int> find_negative_cycle() {
     for (int i = 0; i < n; i++) {
         x = -1;
         for (Edge& e: edges)
-            if (dist[e.u] + e.w < dist[e.v]) {
-                dist[e.v] = dist[e.u] + e.w;
-                par[e.v] = e.u;
-                x = e.v;
+            if (dist[e.from] + e.cost < dist[e.to]) {
+                dist[e.to] = dist[e.from] + e.cost;
+                par[e.to] = e.from;
+                x = e.to;
             }
     }
     if (x == -1) return {};

@@ -1,15 +1,15 @@
 int n;
 const long long LINF = 0x3f3f3f3f3f3f3f3fLL;
 struct Edge {
-    int u, v;
-    long long w;
+    int from, to;
+    long long cost;
 
-    // reversed so the default priority_queue (max-heap) pops the smallest weight
+    // reversed so the default priority_queue (max-heap) pops the smallest cost
     bool operator<(const Edge& o) const {
-        return w > o.w;
+        return cost > o.cost;
     }
 };
-vector<vector<pair<int, long long>>> adj;
+vector<vector<Edge>> adj;
 vector<long long> dist;
 
 /**
@@ -25,12 +25,15 @@ void dijkstra(int src) {
     while (not pq.empty()) {
         Edge cur = pq.top();
         pq.pop();
-        if (cur.w > dist[cur.v]) continue;
+        if (cur.cost > dist[cur.to]) continue;
 
-        for (auto [v, w]: adj[cur.v])
-            if (cur.w + w < dist[v]) {
-                dist[v] = cur.w + w;
-                pq.push({cur.v, v, dist[v]});
-            }
+        for (Edge e: adj[cur.to]) {
+            long long new_cost = cur.cost + e.cost;
+            if (new_cost >= dist[e.to]) continue;
+
+            dist[e.to] = new_cost;
+            e.cost = new_cost;
+            pq.push(e);
+        }
     }
 }

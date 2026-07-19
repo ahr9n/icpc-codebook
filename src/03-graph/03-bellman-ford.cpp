@@ -1,12 +1,12 @@
 int n;
 const long long LINF = 0x3f3f3f3f3f3f3f3fLL;
 struct Edge {
-    int u, v;
-    long long w;
+    int from, to;
+    long long cost;
 
-    // reversed so the default priority_queue (max-heap) pops the smallest weight
+    // reversed so the default priority_queue (max-heap) pops the smallest cost
     bool operator<(const Edge& o) const {
-        return w > o.w;
+        return cost > o.cost;
     }
 };
 vector<Edge> edges;
@@ -22,14 +22,14 @@ bool bellman_ford(int src) {
     for (int i = 0; i < n - 1; i++) {
         bool changed = false;
         for (Edge& e: edges)
-            if (dist[e.u] < LINF and dist[e.u] + e.w < dist[e.v]) {
-                dist[e.v] = dist[e.u] + e.w;
+            if (dist[e.from] < LINF and dist[e.from] + e.cost < dist[e.to]) {
+                dist[e.to] = dist[e.from] + e.cost;
                 changed = true;
             }
         if (not changed) break;
     }
 
     for (Edge& e: edges)
-        if (dist[e.u] < LINF and dist[e.u] + e.w < dist[e.v]) return true;
+        if (dist[e.from] < LINF and dist[e.from] + e.cost < dist[e.to]) return true;
     return false;
 }
