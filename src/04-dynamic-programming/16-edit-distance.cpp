@@ -1,5 +1,6 @@
 string s, t;
 vector<vector<long long>> dp;
+vector<vector<long long>> mem;
 
 /**
  * Edit distance: min insert/delete/replace to turn s into t via a DP table. O(|s|*|t|)
@@ -17,4 +18,21 @@ int edit_distance() {
             else
                 dp[i][j] = 1 + min({dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]});
     return dp[p][q];
+}
+
+// top-down: mem[i][j] = edit distance between suffixes s[i..], t[j..].
+// Caller: mem.assign(s.size() + 1, vector<long long>(t.size() + 1, -1)), edit_distance_rec(0, 0).
+long long edit_distance_rec(int i, int j) {
+    if (i == (int)s.size()) return t.size() - j;
+    if (j == (int)t.size()) return s.size() - i;
+
+    long long& ret = mem[i][j];
+    if (~ret) return ret;
+
+    if (s[i] == t[j]) return ret = edit_distance_rec(i + 1, j + 1);
+    return ret = 1 + min({
+        edit_distance_rec(i + 1, j), 
+        edit_distance_rec(i, j + 1),
+        edit_distance_rec(i + 1, j + 1)
+    });
 }

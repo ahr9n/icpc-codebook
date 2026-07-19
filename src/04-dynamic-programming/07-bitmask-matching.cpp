@@ -19,3 +19,19 @@ long long matching() {
     }
     return dp[(1 << n) - 1];
 }
+
+// top-down: dp[mask] = ways to complete from mask; i = popcount(mask) is next item.
+// Caller: dp.assign(1 << n, -1), matching_rec(0).
+long long matching_rec(int mask) {
+    int i = __builtin_popcount(mask);
+    if (i == n) return 1;
+
+    long long& ret = dp[mask];
+    if (~ret) return ret;
+
+    ret = 0;
+    for (int j = 0; j < n; j++)
+        if (compat[i][j] and not(mask & (1 << j)))
+            ret = (ret + matching_rec(mask | (1 << j))) % MOD;
+    return ret;
+}
