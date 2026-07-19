@@ -1,8 +1,8 @@
-vector<int> coins;
+string s, t;
+vector<vector<long long>> dp;
 
 /**
- * Edit distance with reconstruction: min insert/delete/replace to turn s into t.
- * dp table, then walk back to emit the operations. O(|s|*|t|)
+ * Edit distance: min insert/delete/replace to turn s into t via a DP table. O(|s|*|t|)
  */
 int edit_distance() {
     int p = s.size(), q = t.size();

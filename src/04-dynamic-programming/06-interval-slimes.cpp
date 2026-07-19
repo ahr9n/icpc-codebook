@@ -1,3 +1,4 @@
+const long long LINF = 0x3f3f3f3f3f3f3f3fLL;
 int n;
 vector<int> a;
 vector<vector<long long>> dp;

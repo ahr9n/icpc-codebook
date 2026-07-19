@@ -15,7 +15,7 @@ vector<vector<long long>> mat_pow(vector<vector<long long>> a, long long p) {
 }
 
 /**
- * Example: nth Fibonacci via [[1,1],[1,0]]^n. Top-left entry of the power is F(n).
+ * Example: nth Fibonacci via [[1,1],[1,0]]^n. res[0][1] is F(n).
  */
 int main() {
     long long fib_n = 10;

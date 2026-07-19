@@ -1,8 +1,3 @@
-const double EPS = 1e-9;
-struct Point {
-    double x, y;
-};
-
 /**
  * Segment intersection test: do segments ab and cd share any point? O(1)
  * Straddle test plus collinear-overlap fallback.

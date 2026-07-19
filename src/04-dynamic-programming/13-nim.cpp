@@ -1,7 +1,3 @@
-int n;
-vector<int> a;
-vector<vector<long long>> dp;
-
 /**
  * Nim: first player wins iff the XOR of all pile sizes is nonzero. O(n)
  */

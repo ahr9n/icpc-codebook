@@ -3,7 +3,7 @@ struct Point {
 };
 
 /**
- * Point in polygon by ray casting: returns true if p is strictly inside. O(n)
+ * Point in polygon by ray casting: true if p is inside (boundary undefined). O(n)
  */
 bool point_in_polygon(vector<Point>& poly, Point p) {
     int m = poly.size();

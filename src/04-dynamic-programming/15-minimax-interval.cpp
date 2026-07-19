@@ -1,3 +1,7 @@
+int n;
+vector<int> a;
+vector<vector<long long>> dp;
+
 /**
  * Minimax interval DP (take from either end): two players alternately remove a[l] or
  * a[r], each maximizing their own score. dp[l][r] = best margin for the mover. O(n^2)

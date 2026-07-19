@@ -23,9 +23,11 @@ src/
   10-misc/                Kadane, sliding window, binary/ternary search, MITM
 ```
 
-Files are numbered to control section and subsection order. Each section that
-relies on shared globals opens with a `00-setup` (or `00-primitives`) listing that
-the following snippets assume, mirroring the contest template being in scope.
+Files are numbered to control section and subsection order. Each listing is
+self-contained: it declares at the top only the globals it uses (assuming the
+contest template's includes and constants are in scope), so any single snippet
+can be copied on its own. Worked `main()` examples are embedded in the algorithm
+file they demonstrate.
 
 ## Build
 

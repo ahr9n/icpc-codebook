@@ -1,5 +1,4 @@
-string s, t;
-vector<vector<long long>> dp;
+vector<int> coins;
 
 /**
  * Grundy number of a state: mex of the grundy values of reachable states.

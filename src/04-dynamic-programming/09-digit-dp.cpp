@@ -5,7 +5,7 @@ vector<vector<long long>> dp;
 
 /**
  * Digit DP (EDPC Digit Sum): count x in [0, num] with digit-sum % D == 0.
- * State (pos, rem, tight); dp only the non-tight branch. Subtract 1 to drop x = 0.
+ * State (pos, rem, tight); cache the non-tight branch only. Subtract 1 to drop x = 0.
  * Caller: dp.assign(len, vector<long long>(D, -1)). O(len * D * 10)
  */
 long long digit_dp(int pos, int rem, bool tight) {
