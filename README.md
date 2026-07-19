@@ -33,7 +33,7 @@ Requires `python3` and a LaTeX toolchain with `pdflatex`.
 
 ```
 # macOS: brew install --cask mactex   (or basictex for a smaller install)
-./build.sh          # Linux/macOS -> trd.pdf
+./build.sh          # Linux/macOS -> codebook.pdf
 build.bat           # Windows
 ```
 
