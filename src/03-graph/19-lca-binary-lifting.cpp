@@ -1,5 +1,5 @@
 int n;
-vector<vector<pair<int, long long>>> adj;
+vector<vector<int>> g;
 
 /**
  * LCA by binary lifting. Preprocess up[k][v] = 2^k-th ancestor + depth via DFS,
@@ -12,7 +12,7 @@ vector<int> depth;
 void lca_dfs(int u, int parent) {
     up[u][0] = parent < 0 ? u : parent;
     for (int k = 1; k < LOG; k++) up[u][k] = up[up[u][k - 1]][k - 1];
-    for (auto [v, w]: adj[u])
+    for (int v: g[u])
         if (v != parent) {
             depth[v] = depth[u] + 1;
             lca_dfs(v, u);
@@ -41,19 +41,19 @@ int lca(int a, int b) {
  */
 int main() {
     n = 5;
-    adj.assign(n, {});
+    g.assign(n, {});
     int tree_edges[][2] = {{0, 1}, {0, 2}, {1, 3}, {1, 4}};
     for (auto& e: tree_edges) {
-        adj[e[0]].push_back({e[1], 1});
-        adj[e[1]].push_back({e[0], 1});
+        g[e[0]].push_back(e[1]);
+        g[e[1]].push_back(e[0]);
     }
     lca_build(0);
     cout << lca(3, 4) << '\n';
     cout << lca(3, 2) << '\n';
 
-    adj.assign(n, {});
+    g.assign(n, {});
     int dir_edges[][2] = {{0, 1}, {1, 2}, {2, 0}, {2, 3}, {3, 4}};
-    for (auto& e: dir_edges) adj[e[0]].push_back({e[1], 1});
+    for (auto& e: dir_edges) g[e[0]].push_back(e[1]);
     cout << tarjan_scc() << '\n';
 
     return 0;

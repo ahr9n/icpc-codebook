@@ -1,4 +1,4 @@
-vector<vector<pair<int, long long>>> adj;
+vector<vector<int>> g;
 vector<bool> vis;
 
 /**
@@ -6,6 +6,6 @@ vector<bool> vis;
  */
 void dfs(int u) {
     vis[u] = true;
-    for (auto [v, w]: adj[u])
+    for (int v: g[u])
         if (not vis[v]) dfs(v);
 }

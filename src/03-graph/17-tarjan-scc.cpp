@@ -1,5 +1,5 @@
 int n;
-vector<vector<pair<int, long long>>> adj;
+vector<vector<int>> g;
 vector<int> comp;
 
 /**
@@ -16,7 +16,7 @@ void scc_dfs(int u) {
     tj_stk.push_back(u);
     tj_on[u] = true;
 
-    for (auto [v, w]: adj[u]) {
+    for (int v: g[u]) {
         if (tj_num[v] == -1) {
             scc_dfs(v);
             tj_low[u] = min(tj_low[u], tj_low[v]);

@@ -1,5 +1,5 @@
 int n;
-vector<vector<pair<int, long long>>> adj;
+vector<vector<int>> g;
 
 /**
  * Kahn: topological order of a DAG. Peel zero-indegree nodes.
@@ -8,7 +8,7 @@ vector<vector<pair<int, long long>>> adj;
 vector<int> kahn() {
     vector<int> indeg(n, 0), order;
     for (int u = 0; u < n; u++)
-        for (auto [v, w]: adj[u]) indeg[v]++;
+        for (int v: g[u]) indeg[v]++;
 
     queue<int> q;
     for (int u = 0; u < n; u++)
@@ -18,7 +18,7 @@ vector<int> kahn() {
         int u = q.front();
         q.pop();
         order.push_back(u);
-        for (auto [v, w]: adj[u])
+        for (int v: g[u])
             if (--indeg[v] == 0) q.push(v);
     }
     return order;

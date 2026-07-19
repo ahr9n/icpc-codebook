@@ -5,7 +5,7 @@ struct Edge {
     long long w;
 
     // reversed so the default priority_queue (max-heap) pops the smallest weight
-    bool operator < (const Edge& o) const {
+    bool operator<(const Edge& o) const {
         return w > o.w;
     }
 };

@@ -1,5 +1,5 @@
 int n;
-vector<vector<pair<int, long long>>> adj;
+vector<vector<int>> g;
 vector<int> color;
 
 /**
@@ -11,7 +11,7 @@ int cyc_start, cyc_end;
 
 bool cycle_dfs(int u) {
     color[u] = 1;
-    for (auto [v, w]: adj[u]) {
+    for (int v: g[u]) {
         if (color[v] == 0) {
             cyc_par[v] = u;
             if (cycle_dfs(v)) return true;

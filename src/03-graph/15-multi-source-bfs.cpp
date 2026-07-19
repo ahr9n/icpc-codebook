@@ -1,5 +1,5 @@
 int n;
-vector<vector<pair<int, long long>>> adj;
+vector<vector<int>> g;
 vector<long long> dist;
 
 /**
@@ -16,7 +16,7 @@ void multi_source_bfs(vector<int>& sources) {
     while (not q.empty()) {
         int u = q.front();
         q.pop();
-        for (auto [v, w]: adj[u])
+        for (int v: g[u])
             if (dist[v] == -1) {
                 dist[v] = dist[u] + 1;
                 q.push(v);

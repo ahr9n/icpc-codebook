@@ -1,5 +1,5 @@
 int n;
-vector<vector<pair<int, long long>>> adj;
+vector<vector<int>> g;
 
 /**
  * Bridges & articulation points (undirected). DFS low-links: edge (u,v) is a bridge
@@ -15,7 +15,7 @@ void bridge_dfs(int u, int parent) {
     br_low[u] = br_num[u] = br_timer++;
     int children = 0;
 
-    for (auto [v, w]: adj[u]) {
+    for (int v: g[u]) {
         if (v == parent) continue;
         if (br_num[v] != -1) {
             br_low[u] = min(br_low[u], br_num[v]);

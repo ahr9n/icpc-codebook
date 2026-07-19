@@ -3,6 +3,11 @@ const long long LINF = 0x3f3f3f3f3f3f3f3fLL;
 struct Edge {
     int u, v;
     long long w;
+
+    // reversed so the default priority_queue (max-heap) pops the smallest weight
+    bool operator<(const Edge& o) const {
+        return w > o.w;
+    }
 };
 vector<Edge> edges;
 vector<long long> dist;

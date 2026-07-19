@@ -1,10 +1,10 @@
 int n;
-vector<vector<pair<int, long long>>> adj;
+vector<vector<int>> g;
 vector<long long> dist;
 
 /**
  * Tree diameter: two-sweep BFS. Farthest node from any src, then farthest from it.
- * Returns the diameter (edge count on unweighted adj). O(V)
+ * Returns the diameter (edge count on the unweighted tree). O(V)
  */
 int tree_diameter() {
     dist.assign(n, -1);
@@ -17,7 +17,7 @@ int tree_diameter() {
         int u = q.front();
         q.pop();
         if (dist[u] > dist[far]) far = u;
-        for (auto [v, w]: adj[u])
+        for (int v: g[u])
             if (dist[v] == -1) {
                 dist[v] = dist[u] + 1;
                 q.push(v);
@@ -33,7 +33,7 @@ int tree_diameter() {
         int u = q.front();
         q.pop();
         diam = max(diam, dist[u]);
-        for (auto [v, w]: adj[u])
+        for (int v: g[u])
             if (dist[v] == -1) {
                 dist[v] = dist[u] + 1;
                 q.push(v);

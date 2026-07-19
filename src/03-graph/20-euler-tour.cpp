@@ -1,4 +1,4 @@
-vector<vector<pair<int, long long>>> adj;
+vector<vector<int>> g;
 
 /**
  * Euler tour (tree flattening): map each subtree to a contiguous range
@@ -10,7 +10,7 @@ int timer;
 
 void euler(int u, int parent) {
     tin[u] = timer++;
-    for (auto [v, w]: adj[u])
+    for (int v: g[u])
         if (v != parent) euler(v, u);
     tout[u] = timer - 1;
 }

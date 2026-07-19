@@ -1,4 +1,4 @@
-vector<vector<pair<int, long long>>> adj;
+vector<vector<int>> g;
 vector<int> color;
 
 /**
@@ -13,7 +13,7 @@ bool is_bipartite(int src) {
     while (not q.empty()) {
         int u = q.front();
         q.pop();
-        for (auto [v, w]: adj[u]) {
+        for (int v: g[u]) {
             if (color[v] == -1) {
                 color[v] = color[u] ^ 1;
                 q.push(v);
