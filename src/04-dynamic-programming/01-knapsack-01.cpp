@@ -24,5 +24,6 @@ long long knapsack01_rec(int i, int cap) {
     ret = knapsack01_rec(i + 1, cap);
     if (wt[i] <= cap) 
         ret = max(ret, knapsack01_rec(i + 1, cap - wt[i]) + val[i]);
+
     return ret;
 }

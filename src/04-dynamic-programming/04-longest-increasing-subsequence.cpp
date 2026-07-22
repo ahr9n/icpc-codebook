@@ -1,4 +1,5 @@
 vector<int> a;
+vector<int> memo;
 
 /**
  * Longest strictly increasing subsequence of a. Patience sorting on tails.
@@ -14,4 +15,28 @@ int lis() {
             *it = x;
     }
     return tails.size();
+}
+
+// top-down. O(n²)
+int lis_rec(int i) {
+    int& ret = memo[i];
+    if (~ret) return ret;
+
+    ret = 1;
+    for (int j = 0; j < i; j++)
+        if (a[j] < a[i]) ret = max(ret, 1 + lis_rec(j));
+
+    return ret;
+}
+
+int main() {
+    int n = a.size();
+    memo.assign(n, -1);
+
+    int ans = 0;
+    for (int i = 0; i < n; i++)
+        ans = max(ans, lis_rec(i));
+    cout << ans;
+
+    return 0;
 }

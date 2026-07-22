@@ -28,7 +28,8 @@ long long knapsack_by_value_rec(int i, int v) {
     long long& ret = mem[i][v];
     if (~ret) return ret;
 
-    ret = knapsack_by_value_rec(i + 1, v);
-    ret = min(ret, knapsack_by_value_rec(i + 1, max(0, v - val[i])) + wt[i]);
-    return ret;
+    return ret = min(
+        knapsack_by_value_rec(i + 1, v), 
+        knapsack_by_value_rec(i + 1, max(0, v - val[i])) + wt[i]
+    );
 }

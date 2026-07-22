@@ -21,6 +21,7 @@ int lcs() {
 // Caller: mem.assign(s.size() + 1, vector<long long>(t.size() + 1, -1)), lcs_rec(0, 0).
 long long lcs_rec(int i, int j) {
     if (i == (int)s.size() or j == (int)t.size()) return 0;
+
     long long& ret = mem[i][j];
     if (~ret) return ret;
 
