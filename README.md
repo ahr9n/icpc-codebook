@@ -10,17 +10,21 @@ file is a subsection, assembled into a landscape two-column PDF via LaTeX.
 
 ```
 src/
-  01-template/            contest template + is_valid grid helper
-  02-data-structures/     DSU, segment trees (iterative/recursive/lazy),
-                          difference array, 2D prefix sums, MO's algorithm
-  03-graph/               shortest paths, MST, SCC, bridges, LCA, cycles, ...
+  01-template/            contest template (includes, consts, fast IO, main)
+  02-data-structures/     DSU, segment trees (iter/recursive/lazy), Fenwick/BIT,
+                          sparse table, difference array, 2D prefix sums, MO's
+  03-graph/               BFS/DFS/0-1-BFS, shortest paths, MST, topo, SCC, bridges,
+                          LCA, tree diameter, cycles, Euler tour
   04-dynamic-programming/ knapsack, LCS/LIS, interval, bitmask, tree, digit, games
+                          (each with both iterative and recursive versions)
   05-strings/             KMP, Z, hashing, trie
   06-number-theory/       modpow, inverse, sieves, factorize, phi, ext-gcd, CRT, nCr
   07-geometry/            point primitives, orientation, polygons, convex hull
   08-flow/                Dinic max-flow, Kuhn bipartite matching
   09-math/                matrix exponentiation, big integer arithmetic
-  10-misc/                Kadane, sliding window, binary/ternary search, MITM
+  10-bitmask/             bit ops, lowest-bit, gray code, subset/submask enumeration
+  11-misc/                Kadane, sliding window, binary/ternary search, MITM,
+                          coordinate compression, inversion count
 ```
 
 Files are numbered to control section and subsection order. Each listing is
