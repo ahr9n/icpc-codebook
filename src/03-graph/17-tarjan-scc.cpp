@@ -48,3 +48,19 @@ int tarjan_scc() {
         if (tj_num[u] == -1) scc_dfs(u);
     return tj_cnt;
 }
+
+/**
+ * Example: two SCCs {0,1,2} and {3,4} linked by edge 2 -> 3.
+ */
+int main() {
+    n = 5;
+    g.assign(n, {});
+    g[0].push_back(1);
+    g[1].push_back(2);
+    g[2].push_back(0);
+    g[2].push_back(3);
+    g[3].push_back(4);
+    g[4].push_back(3);
+    cout << tarjan_scc() << "\n";  // -> 2
+    return 0;
+}

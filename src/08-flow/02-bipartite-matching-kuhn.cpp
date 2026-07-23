@@ -27,3 +27,16 @@ int bipartite_matching(int left, int right) {
     }
     return res;
 }
+
+/**
+ * Example: maximum matching in a small bipartite graph.
+ */
+int main() {
+    int left = 3, right = 3;
+    adj_l.assign(left, {});
+    adj_l[0] = {0, 1};
+    adj_l[1] = {0};
+    adj_l[2] = {1, 2};
+    cout << bipartite_matching(left, right) << "\n";  // -> 3
+    return 0;
+}

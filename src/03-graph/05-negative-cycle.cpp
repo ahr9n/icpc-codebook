@@ -42,3 +42,18 @@ vector<int> find_negative_cycle() {
     reverse(cycle.begin(), cycle.end());
     return cycle;
 }
+
+/**
+ * Example: detect a negative cycle 0 -> 1 -> 2 -> 0 (total weight -1).
+ */
+int main() {
+    n = 3;
+    edges.clear();
+    edges.push_back({0, 1, 1});
+    edges.push_back({1, 2, -1});
+    edges.push_back({2, 0, -1});
+    vector<int> cycle = find_negative_cycle();
+    for (int v: cycle) cout << v << " ";
+    cout << "\n";  // -> 0 1 2 0
+    return 0;
+}

@@ -29,3 +29,15 @@ struct SegTree {
         return res;
     }
 };
+
+/**
+ * Example: build values 1..5, range-sum, then point-update and re-query.
+ */
+int main() {
+    SegTree st(5);
+    for (int i = 0; i < 5; i++) st.update(i, i + 1);
+    cout << st.query(1, 3) << "\n";  // -> 9
+    st.update(2, 10);
+    cout << st.query(0, 4) << "\n";  // -> 22
+    return 0;
+}

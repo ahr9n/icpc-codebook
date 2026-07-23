@@ -20,3 +20,13 @@ struct StringHash {
         return ((h[r + 1] - h[l] * p[r - l + 1]) % mod + mod) % mod;
     }
 };
+
+/**
+ * Example: two equal substrings share the same hash.
+ */
+int main() {
+    string s = "abcabc";
+    StringHash sh(s);
+    cout << (sh.get(0, 2) == sh.get(3, 5)) << "\n";  // -> 1
+    return 0;
+}

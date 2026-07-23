@@ -23,3 +23,19 @@ vector<int> kahn() {
     }
     return order;
 }
+
+/**
+ * Example: topological order of a small DAG.
+ */
+int main() {
+    n = 4;
+    g.assign(n, {});
+    g[0].push_back(1);
+    g[0].push_back(2);
+    g[1].push_back(3);
+    g[2].push_back(3);
+    vector<int> order = kahn();
+    for (int v: order) cout << v << " ";
+    cout << "\n";  // -> 0 1 2 3
+    return 0;
+}

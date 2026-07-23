@@ -17,3 +17,14 @@ struct Prefix2D {
         return pre[r2 + 1][c2 + 1] - pre[r1][c2 + 1] - pre[r2 + 1][c1] + pre[r1][c1];
     }
 };
+
+/**
+ * Example: build over a 3x3 grid, then sum two submatrices in O(1).
+ */
+int main() {
+    vector<vector<long long>> a = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    Prefix2D p(a);
+    cout << p.query(0, 0, 1, 1) << "\n";  // -> 12
+    cout << p.query(1, 1, 2, 2) << "\n";  // -> 28
+    return 0;
+}

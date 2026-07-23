@@ -40,3 +40,20 @@ void find_bridges() {
     for (int u = 0; u < n; u++)
         if (br_num[u] == -1) bridge_dfs(u, -1);
 }
+
+/**
+ * Example: a 4-node path graph where every edge is a bridge.
+ */
+int main() {
+    n = 4;
+    g.assign(n, {});
+    g[0].push_back(1);
+    g[1].push_back(0);
+    g[1].push_back(2);
+    g[2].push_back(1);
+    g[2].push_back(3);
+    g[3].push_back(2);
+    find_bridges();
+    cout << bridges.size() << "\n";  // -> 3
+    return 0;
+}

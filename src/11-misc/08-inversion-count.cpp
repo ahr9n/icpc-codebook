@@ -21,3 +21,12 @@ long long inversions(vector<int>& a, int l, int r) {
     copy(tmp.begin(), tmp.end(), a.begin() + l);
     return inv;
 }
+
+/**
+ * Example: count inversions in {3, 1, 2}.
+ */
+int main() {
+    vector<int> a = {3, 1, 2};
+    cout << inversions(a, 0, a.size()) << "\n";  // -> 2
+    return 0;
+}

@@ -13,3 +13,17 @@ vector<int> z_function(string& s) {
     }
     return z;
 }
+
+/**
+ * Example: count occurrences of a pattern in a text via the z-function.
+ */
+int main() {
+    string pat = "ab", text = "abcabab";
+    string s = pat + '#' + text;
+    vector<int> z = z_function(s);
+    int matches = 0;
+    for (int i = pat.size() + 1; i < (int)s.size(); i++)
+        if (z[i] == (int)pat.size()) matches++;
+    cout << matches << "\n";  // -> 3
+    return 0;
+}

@@ -44,3 +44,12 @@ int min_bottleneck_grid() {
     }
     return 0;
 }
+
+/**
+ * Example: min-effort path (max abs step) across a 3x3 height grid.
+ */
+int main() {
+    grid = {{1, 2, 2}, {3, 8, 2}, {5, 3, 5}};
+    cout << min_bottleneck_grid() << "\n";  // -> 2
+    return 0;
+}

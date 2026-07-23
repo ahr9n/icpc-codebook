@@ -37,3 +37,18 @@ long long slimes_rec(int l, int r) {
         ret = min(ret, slimes_rec(l, k) + slimes_rec(k + 1, r) + pre[r + 1] - pre[l]);
     return ret;
 }
+
+/**
+ * Example: merge slimes {10,20,30}; cheapest total merge cost is 90.
+ */
+int main() {
+    n = 3;
+    a = {10, 20, 30};
+    cout << slimes() << "\n";  // -> 90
+
+    pre.assign(n + 1, 0);
+    for (int i = 0; i < n; i++) pre[i + 1] = pre[i] + a[i];
+    mem.assign(n, vector<long long>(n, -1));
+    cout << slimes_rec(0, n - 1) << "\n";  // -> 90
+    return 0;
+}

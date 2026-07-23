@@ -28,8 +28,28 @@ long long knapsack_by_value_rec(int i, int v) {
     long long& ret = mem[i][v];
     if (~ret) return ret;
 
-    return ret = min(
-        knapsack_by_value_rec(i + 1, v), 
-        knapsack_by_value_rec(i + 1, max(0, v - val[i])) + wt[i]
-    );
+    return ret = min(knapsack_by_value_rec(i + 1, v),
+                     knapsack_by_value_rec(i + 1, max(0, v - val[i])) + wt[i]);
+}
+
+/**
+ * Example: items (wt,val) {1,1},{3,4},{4,5},{5,7}, capacity 7 -> max value 9.
+ */
+int main() {
+    n = 4;
+    W = 7;
+    wt = {1, 3, 4, 5};
+    val = {1, 4, 5, 7};
+    cout << knapsack_by_value() << "\n";  // -> 9
+
+    int sum_v = accumulate(val.begin(), val.end(), 0);
+    mem.assign(n, vector<long long>(sum_v + 1, -1));
+    int ans = 0;
+    for (int v = sum_v; v >= 0; v--)
+        if (knapsack_by_value_rec(0, v) <= W) {
+            ans = v;
+            break;
+        }
+    cout << ans << "\n";  // -> 9
+    return 0;
 }

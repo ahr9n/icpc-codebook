@@ -24,3 +24,17 @@ struct DSU {
         return true;
     }
 };
+
+/**
+ * Example: unite pairs into groups, then read component count and membership.
+ */
+int main() {
+    DSU dsu(5);
+    dsu.unite(0, 1);
+    dsu.unite(1, 2);
+    dsu.unite(3, 4);
+    cout << dsu.cnt << "\n";                       // -> 2
+    cout << (dsu.find(0) == dsu.find(2)) << "\n";  // -> 1
+    cout << (dsu.find(0) == dsu.find(3)) << "\n";  // -> 0
+    return 0;
+}

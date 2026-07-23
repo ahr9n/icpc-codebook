@@ -28,3 +28,16 @@ long long lcs_rec(int i, int j) {
     if (s[i] == t[j]) return ret = 1 + lcs_rec(i + 1, j + 1);
     return ret = max(lcs_rec(i + 1, j), lcs_rec(i, j + 1));
 }
+
+/**
+ * Example: LCS of "AGGTAB" and "GXTXAYB" is "GTAB", length 4.
+ */
+int main() {
+    s = "AGGTAB";
+    t = "GXTXAYB";
+    cout << lcs() << "\n";  // -> 4
+
+    mem.assign(s.size() + 1, vector<long long>(t.size() + 1, -1));
+    cout << lcs_rec(0, 0) << "\n";  // -> 4
+    return 0;
+}

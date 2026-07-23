@@ -16,3 +16,14 @@ int grundy_val(int state) {
     while (reachable.count(mex)) mex++;
     return grundy[state] = mex;
 }
+
+/**
+ * Example: subtraction game moves {1,2}; Grundy value of state 4 is 1.
+ */
+int main() {
+    coins = {1, 2};
+    int state = 4;
+    grundy.assign(state + 1, -1);
+    cout << grundy_val(state) << "\n";  // -> 1
+    return 0;
+}

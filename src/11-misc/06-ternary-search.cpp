@@ -12,3 +12,13 @@ double ternary_search(double lo, double hi, function<double(double)> f) {
     }
     return lo;
 }
+
+/**
+ * Example: minimize (x - 2)^2, whose minimum is at x = 2.
+ */
+int main() {
+    auto f = [&](double x) { return (x - 2) * (x - 2); };
+    double x = ternary_search(-10, 10, f);
+    cout << fixed << setprecision(3) << x << "\n";  // -> 2.000
+    return 0;
+}

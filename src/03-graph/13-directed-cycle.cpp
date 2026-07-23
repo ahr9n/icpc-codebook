@@ -39,3 +39,18 @@ vector<int> find_directed_cycle() {
     reverse(cycle.begin(), cycle.end());
     return cycle;
 }
+
+/**
+ * Example: find a directed cycle 0 -> 1 -> 2 -> 0.
+ */
+int main() {
+    n = 3;
+    g.assign(n, {});
+    g[0].push_back(1);
+    g[1].push_back(2);
+    g[2].push_back(0);
+    vector<int> cycle = find_directed_cycle();
+    for (int v: cycle) cout << v << " ";
+    cout << "\n";  // -> 0 1 2
+    return 0;
+}

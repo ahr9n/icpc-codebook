@@ -23,3 +23,22 @@ bool is_bipartite(int src) {
     }
     return true;
 }
+
+/**
+ * Example: a 4-cycle graph is bipartite (2-colorable).
+ */
+int main() {
+    int n = 4;
+    g.assign(n, {});
+    g[0].push_back(1);
+    g[1].push_back(0);
+    g[1].push_back(2);
+    g[2].push_back(1);
+    g[2].push_back(3);
+    g[3].push_back(2);
+    g[3].push_back(0);
+    g[0].push_back(3);
+    color.assign(n, -1);
+    cout << is_bipartite(0) << "\n";  // -> 1
+    return 0;
+}

@@ -36,3 +36,21 @@ long long prim(int src = 0) {
     }
     return cnt == n ? total : -1;
 }
+
+/**
+ * Example: MST weight of a 4-node weighted graph (adjacency list).
+ */
+int main() {
+    n = 4;
+    adj.assign(n, {});
+    adj[0].push_back({0, 1, 1});
+    adj[1].push_back({1, 0, 1});
+    adj[1].push_back({1, 2, 2});
+    adj[2].push_back({2, 1, 2});
+    adj[2].push_back({2, 3, 3});
+    adj[3].push_back({3, 2, 3});
+    adj[0].push_back({0, 3, 4});
+    adj[3].push_back({3, 0, 4});
+    cout << prim() << "\n";  // -> 6
+    return 0;
+}

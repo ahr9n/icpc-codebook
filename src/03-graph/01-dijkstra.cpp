@@ -37,3 +37,20 @@ void dijkstra(int src) {
         }
     }
 }
+
+/**
+ * Example: shortest path 0 -> 4 in a small weighted digraph.
+ */
+int main() {
+    n = 5;
+    adj.assign(n, {});
+    adj[0].push_back({0, 1, 2});
+    adj[0].push_back({0, 2, 5});
+    adj[1].push_back({1, 2, 1});
+    adj[1].push_back({1, 3, 2});
+    adj[2].push_back({2, 4, 3});
+    adj[3].push_back({3, 4, 1});
+    dijkstra(0);
+    cout << dist[4] << "\n";  // -> 5
+    return 0;
+}

@@ -16,3 +16,19 @@ void tree_dp(int u, int par) {
         dp[u][1] = dp[u][1] * dp[v][0] % MOD;
     }
 }
+
+/**
+ * Example: path tree 0-1-2 painting; valid colorings = 5 (no two adjacent black).
+ */
+int main() {
+    int n = 3;
+    g.assign(n, {});
+    g[0] = {1};
+    g[1] = {0, 2};
+    g[2] = {1};
+
+    dp.assign(n, vector<long long>(2, 0));
+    tree_dp(0, -1);
+    cout << (dp[0][0] + dp[0][1]) % MOD << "\n";  // -> 5
+    return 0;
+}

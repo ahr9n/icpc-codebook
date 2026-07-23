@@ -29,14 +29,17 @@ int lis_rec(int i) {
     return ret;
 }
 
+/**
+ * Example: LIS of {10,9,2,5,3,7,101,18} has length 4 (e.g. 2,3,7,18).
+ */
 int main() {
+    a = {10, 9, 2, 5, 3, 7, 101, 18};
+    cout << lis() << "\n";  // -> 4
+
     int n = a.size();
     memo.assign(n, -1);
-
     int ans = 0;
-    for (int i = 0; i < n; i++)
-        ans = max(ans, lis_rec(i));
-    cout << ans;
-
+    for (int i = 0; i < n; i++) ans = max(ans, lis_rec(i));
+    cout << ans << "\n";  // -> 4
     return 0;
 }

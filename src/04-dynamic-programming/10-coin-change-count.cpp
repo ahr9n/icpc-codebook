@@ -26,3 +26,16 @@ long long coin_change_count_rec(int i, int rem) {
 
     return ret = coin_change_count_rec(i + 1, rem) + coin_change_count_rec(i, rem - coins[i]);
 }
+
+/**
+ * Example: coins {1,2,5}, target 5 -> 4 distinct combinations.
+ */
+int main() {
+    W = 5;
+    coins = {1, 2, 5};
+    cout << coin_change_count() << "\n";  // -> 4
+
+    mem.assign(coins.size(), vector<long long>(W + 1, -1));
+    cout << coin_change_count_rec(0, W) << "\n";  // -> 4
+    return 0;
+}

@@ -27,7 +27,7 @@ int tree_diameter() {
     dist.assign(n, -1);
     dist[far] = 0;
     q.push(far);
-    int diam = 0;
+    long long diam = 0;
 
     while (not q.empty()) {
         int u = q.front();
@@ -40,4 +40,22 @@ int tree_diameter() {
             }
     }
     return diam;
+}
+
+/**
+ * Example: diameter of a 5-node path tree.
+ */
+int main() {
+    n = 5;
+    g.assign(n, {});
+    g[0].push_back(1);
+    g[1].push_back(0);
+    g[1].push_back(2);
+    g[2].push_back(1);
+    g[2].push_back(3);
+    g[3].push_back(2);
+    g[3].push_back(4);
+    g[4].push_back(3);
+    cout << tree_diameter() << "\n";  // -> 4
+    return 0;
 }

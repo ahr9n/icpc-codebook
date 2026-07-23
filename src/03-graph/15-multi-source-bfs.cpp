@@ -23,3 +23,23 @@ void multi_source_bfs(vector<int>& sources) {
             }
     }
 }
+
+/**
+ * Example: distance from nearest of sources {0, 4} on a 5-node path.
+ */
+int main() {
+    n = 5;
+    g.assign(n, {});
+    g[0].push_back(1);
+    g[1].push_back(0);
+    g[1].push_back(2);
+    g[2].push_back(1);
+    g[2].push_back(3);
+    g[3].push_back(2);
+    g[3].push_back(4);
+    g[4].push_back(3);
+    vector<int> sources = {0, 4};
+    multi_source_bfs(sources);
+    cout << dist[2] << "\n";  // -> 2
+    return 0;
+}

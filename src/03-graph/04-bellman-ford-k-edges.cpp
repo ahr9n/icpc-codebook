@@ -29,3 +29,18 @@ long long bellman_ford_k_edges(int src, int dst, int k) {
     }
     return dist[dst] == LINF ? -1 : dist[dst];
 }
+
+/**
+ * Example: cheapest 0 -> 3 using at most k+1 = 2 edges (1 stop).
+ */
+int main() {
+    n = 4;
+    edges.clear();
+    edges.push_back({0, 1, 100});
+    edges.push_back({1, 2, 100});
+    edges.push_back({2, 0, 100});
+    edges.push_back({1, 3, 600});
+    edges.push_back({2, 3, 200});
+    cout << bellman_ford_k_edges(0, 3, 1) << "\n";  // -> 700
+    return 0;
+}

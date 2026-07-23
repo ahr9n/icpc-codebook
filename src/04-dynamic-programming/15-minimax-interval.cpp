@@ -29,3 +29,16 @@ long long game_ends_rec(int l, int r) {
 
     return ret = max(a[l] - game_ends_rec(l + 1, r), a[r] - game_ends_rec(l, r - 1));
 }
+
+/**
+ * Example: take-from-ends game on {1,5,2}; best margin for the mover is -2.
+ */
+int main() {
+    n = 3;
+    a = {1, 5, 2};
+    cout << game_ends() << "\n";  // -> -2
+
+    mem.assign(n, vector<long long>(n, LINF));
+    cout << game_ends_rec(0, n - 1) << "\n";  // -> -2
+    return 0;
+}

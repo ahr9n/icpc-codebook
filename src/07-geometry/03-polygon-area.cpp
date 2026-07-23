@@ -15,3 +15,12 @@ double polygon_area(vector<Point>& poly) {
     for (int i = 0; i < m; i++) area += cross(poly[i], poly[(i + 1) % m]);
     return area / 2;
 }
+
+/**
+ * Example: area of the unit square is 1.
+ */
+int main() {
+    vector<Point> square = {{0, 0}, {1, 0}, {1, 1}, {0, 1}};
+    cout << fabs(polygon_area(square)) << "\n";  // -> 1
+    return 0;
+}

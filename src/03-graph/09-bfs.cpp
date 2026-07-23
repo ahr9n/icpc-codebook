@@ -22,3 +22,19 @@ void bfs(int src) {
             }
     }
 }
+
+/**
+ * Example: unweighted distances from 0; report distance to node 4.
+ */
+int main() {
+    n = 5;
+    g.assign(n, {});
+    g[0].push_back(1);
+    g[0].push_back(2);
+    g[1].push_back(3);
+    g[2].push_back(3);
+    g[3].push_back(4);
+    bfs(0);
+    cout << dist[4] << "\n";  // -> 3
+    return 0;
+}

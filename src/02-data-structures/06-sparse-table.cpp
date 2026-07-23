@@ -20,3 +20,14 @@ struct SparseTable {
         return min(table[k][l], table[k][r - (1 << k) + 1]);
     }
 };
+
+/**
+ * Example: build over an array, then answer two inclusive range-min queries.
+ */
+int main() {
+    vector<long long> a = {5, 2, 8, 1, 9, 3};
+    SparseTable st(a);
+    cout << st.query(0, 2) << "\n";  // -> 2
+    cout << st.query(3, 5) << "\n";  // -> 1
+    return 0;
+}

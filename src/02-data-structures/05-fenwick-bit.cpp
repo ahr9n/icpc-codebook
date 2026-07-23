@@ -22,3 +22,14 @@ struct BIT {
         return prefix(r) - prefix(l - 1);
     }
 };
+
+/**
+ * Example: add values 1..5, then read a prefix sum and a range sum.
+ */
+int main() {
+    BIT bit(5);
+    for (int i = 0; i < 5; i++) bit.add(i, i + 1);
+    cout << bit.prefix(2) << "\n";    // -> 6
+    cout << bit.range(1, 3) << "\n";  // -> 9
+    return 0;
+}

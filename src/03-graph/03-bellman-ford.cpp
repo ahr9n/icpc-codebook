@@ -33,3 +33,18 @@ bool bellman_ford(int src) {
         if (dist[e.from] < LINF and dist[e.from] + e.cost < dist[e.to]) return true;
     return false;
 }
+
+/**
+ * Example: SSSP from 0 with a negative edge but no negative cycle.
+ */
+int main() {
+    n = 4;
+    edges.clear();
+    edges.push_back({0, 1, 1});
+    edges.push_back({1, 2, -2});
+    edges.push_back({2, 3, 3});
+    edges.push_back({0, 3, 10});
+    bool has_cycle = bellman_ford(0);
+    cout << has_cycle << " " << dist[3] << "\n";  // -> 0 2
+    return 0;
+}

@@ -12,3 +12,14 @@ vector<long long> difference_array(int len, vector<tuple<int, int, long long>>& 
     diff.pop_back();
     return diff;
 }
+
+/**
+ * Example: apply two range-adds, then print the recovered array.
+ */
+int main() {
+    vector<tuple<int, int, long long>> updates = {{0, 2, 5}, {1, 3, 3}};
+    vector<long long> a = difference_array(5, updates);
+    for (long long x: a) cout << x << " ";
+    cout << "\n";  // -> 5 8 8 3 0
+    return 0;
+}

@@ -36,3 +36,16 @@ struct SegTreeRec {
         return merge(query(2 * i, s, mid, l, r), query(2 * i + 1, mid + 1, e, l, r));
     }
 };
+
+/**
+ * Example: build values 1..5, range-sum, then point-update and re-query.
+ */
+int main() {
+    int n = 5;
+    SegTreeRec st(n);
+    for (int i = 0; i < n; i++) st.update(1, 0, n - 1, i, i + 1);
+    cout << st.query(1, 0, n - 1, 1, 3).val << "\n";  // -> 9
+    st.update(1, 0, n - 1, 2, 10);
+    cout << st.query(1, 0, n - 1, 0, 4).val << "\n";  // -> 22
+    return 0;
+}

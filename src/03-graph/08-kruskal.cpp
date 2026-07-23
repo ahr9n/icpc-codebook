@@ -26,3 +26,17 @@ long long kruskal() {
         }
     return cnt == n - 1 ? total : -1;
 }
+
+/**
+ * Example: MST weight of a 4-node weighted graph (edge list).
+ */
+int main() {
+    n = 4;
+    edges.clear();
+    edges.push_back({0, 1, 1});
+    edges.push_back({1, 2, 2});
+    edges.push_back({2, 3, 3});
+    edges.push_back({0, 3, 4});
+    cout << kruskal() << "\n";  // -> 6
+    return 0;
+}

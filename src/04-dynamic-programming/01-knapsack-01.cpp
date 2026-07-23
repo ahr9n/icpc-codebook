@@ -22,8 +22,22 @@ long long knapsack01_rec(int i, int cap) {
     if (~ret) return ret;
 
     ret = knapsack01_rec(i + 1, cap);
-    if (wt[i] <= cap) 
-        ret = max(ret, knapsack01_rec(i + 1, cap - wt[i]) + val[i]);
+    if (wt[i] <= cap) ret = max(ret, knapsack01_rec(i + 1, cap - wt[i]) + val[i]);
 
     return ret;
+}
+
+/**
+ * Example: items (wt,val) {1,1},{3,4},{4,5},{5,7} into capacity 7 -> best value 9.
+ */
+int main() {
+    n = 4;
+    W = 7;
+    wt = {1, 3, 4, 5};
+    val = {1, 4, 5, 7};
+    cout << knapsack01() << "\n";  // -> 9
+
+    mem.assign(n, vector<long long>(W + 1, -1));
+    cout << knapsack01_rec(0, W) << "\n";  // -> 9
+    return 0;
 }

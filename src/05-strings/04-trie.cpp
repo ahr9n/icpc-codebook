@@ -1,41 +1,69 @@
 /**
- * Trie over lowercase letters: insert words, then count/prefix-match. O(|word|) per op.
- * child[node][c] = next node or -1; cnt = words ending here.
+ * Trie over lowercase letters: insert words, then whole-word / prefix match. O(|word|).
+ * t[u].next[c] = child node or -1; t[u].words_cnt = words ending at u; t[0] = root.
  */
 const int ALPHA = 26;
 
+struct Node {
+    array<int, ALPHA> next;
+    int words_cnt = 0;
+
+    Node() {
+        next.fill(-1);
+    }
+};
+
 struct Trie {
-    vector<array<int, ALPHA>> child;
-    vector<int> cnt;
+    vector<Node> t;
 
     Trie() {
         new_node();
     }
 
     int new_node() {
-        child.push_back({});
-        child.back().fill(-1);
-        cnt.push_back(0);
-        return child.size() - 1;
+        t.emplace_back();
+        return t.size() - 1;
     }
 
     void insert(string& w) {
         int u = 0;
         for (char ch: w) {
             int c = ch - 'a';
-            if (child[u][c] == -1) child[u][c] = new_node();
-            u = child[u][c];
+            if (t[u].next[c] == -1) t[u].next[c] = new_node();
+            u = t[u].next[c];
         }
-        cnt[u]++;
+        t[u].words_cnt++;
     }
 
-    bool contains(string& w) {
+    bool contains_word(string& w) {
         int u = 0;
         for (char ch: w) {
             int c = ch - 'a';
-            if (child[u][c] == -1) return false;
-            u = child[u][c];
+            if (t[u].next[c] == -1) return false;
+            u = t[u].next[c];
         }
-        return cnt[u] > 0;
+        return t[u].words_cnt > 0;
+    }
+
+    bool contains_prefix(string& w) {
+        int u = 0;
+        for (char ch: w) {
+            int c = ch - 'a';
+            if (t[u].next[c] == -1) return false;
+            u = t[u].next[c];
+        }
+        return true;
     }
 };
+
+/**
+ * Example: insert a word, then query whole-word and prefix membership.
+ */
+int main() {
+    Trie tr;
+    string apple = "apple", app = "app", banana = "banana";
+    tr.insert(apple);
+    cout << tr.contains_word(apple) << tr.contains_prefix(app) << tr.contains_word(banana)
+         << "\n";  // -> 110
+    return 0;
+}

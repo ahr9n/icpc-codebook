@@ -29,3 +29,13 @@ vector<long long> mo_solve(int arr_len, vector<MoQuery>& queries) {
     }
     return ans;
 }
+
+/**
+ * Example: wire up offline range queries (add/remove/get stubs return 0 here).
+ */
+int main() {
+    vector<MoQuery> queries = {{0, 2, 0}, {1, 3, 1}};
+    vector<long long> ans = mo_solve(5, queries);
+    cout << ans[0] << " " << ans[1] << "\n";  // -> 0 0
+    return 0;
+}

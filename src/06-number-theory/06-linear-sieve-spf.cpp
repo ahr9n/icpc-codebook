@@ -16,3 +16,17 @@ vector<int> linear_sieve(int n) {
     }
     return spf;
 }
+
+/**
+ * Example: factorize a number by repeatedly dividing out its smallest prime factor.
+ */
+int main() {
+    vector<int> spf = linear_sieve(100);
+    int x = 60;
+    while (x > 1) {
+        cout << spf[x] << " ";
+        x /= spf[x];
+    }
+    cout << "\n";  // -> 2 2 3 5
+    return 0;
+}

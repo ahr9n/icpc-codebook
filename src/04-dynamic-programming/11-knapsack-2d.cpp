@@ -30,3 +30,20 @@ long long knapsack_2d_rec(int i, int x, int y) {
         ret = max(ret, knapsack_2d_rec(i + 1, x - wt[i], y - val[i]) + a[i]);
     return ret;
 }
+
+/**
+ * Example: 3 items (wt, dim2, value); capacities W=3, D=3 -> best value 30.
+ */
+int main() {
+    n = 3;
+    W = 3;
+    D = 3;
+    wt = {1, 2, 3};
+    val = {2, 1, 3};
+    a = {10, 20, 30};
+    cout << knapsack_2d() << "\n";  // -> 30
+
+    mem3.assign(n, vector<vector<long long>>(W + 1, vector<long long>(D + 1, -1)));
+    cout << knapsack_2d_rec(0, W, D) << "\n";  // -> 30
+    return 0;
+}

@@ -35,3 +35,18 @@ void bfs_01(int src) {
             }
     }
 }
+
+/**
+ * Example: 0-1 BFS shortest path 0 -> 3 with 0/1 edge weights.
+ */
+int main() {
+    n = 4;
+    adj.assign(n, {});
+    adj[0].push_back({0, 1, 0});
+    adj[1].push_back({1, 2, 1});
+    adj[0].push_back({0, 2, 1});
+    adj[2].push_back({2, 3, 0});
+    bfs_01(0);
+    cout << dist[3] << "\n";  // -> 1
+    return 0;
+}
