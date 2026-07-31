@@ -1,8 +1,8 @@
 # ICPC Roadmap
 
-Codebook coverage. `[x]` done, `[~]` partial, `[ ]` planned. Within a category
-items run easy → hard, matching the `NN-` order in `src/`, so the list is also a
-study order. Pure-STL basics are assumed and omitted.
+Codebook coverage. `[x]` done, `[ ]` planned. Within a category items run
+easy → hard, matching the `NN-` order in `src/`, so the list is also a study
+order. Pure-STL basics are assumed and omitted.
 
 ---
 

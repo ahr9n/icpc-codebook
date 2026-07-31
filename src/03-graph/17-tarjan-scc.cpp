@@ -1,66 +1,63 @@
-int n;
-vector<vector<int>> g;
-vector<int> comp;
-
 /**
  * Tarjan SCC: label each vertex with its strongly-connected component in comp[].
- * One DFS with low-links and a stack; comp ids come out in reverse topological order.
- * Caller: comp.assign(n, -1), then run for each unvisited node. O(V+E)
+ * One DFS with low-links and a stack; comp ids come out in reverse topological
+ * order. run() returns the number of components. O(V+E)
  */
-vector<int> tj_low, tj_num, tj_stk;
-vector<bool> tj_on;
-int tj_timer, tj_cnt;
+struct TarjanScc {
+    int n, timer = 0, scc_count = 0;
+    vector<vector<int>> g;
+    vector<int> comp, low, num, stk;
+    vector<bool> on_stack;
 
-void scc_dfs(int u) {
-    tj_low[u] = tj_num[u] = tj_timer++;
-    tj_stk.push_back(u);
-    tj_on[u] = true;
+    TarjanScc(int n) : n(n), g(n), comp(n, -1), low(n), num(n, -1), on_stack(n) {}
 
-    for (int v: g[u]) {
-        if (tj_num[v] == -1) {
-            scc_dfs(v);
-            tj_low[u] = min(tj_low[u], tj_low[v]);
-        } else if (tj_on[v])
-            tj_low[u] = min(tj_low[u], tj_num[v]);
+    void add_edge(int u, int v) {
+        g[u].push_back(v);
     }
 
-    if (tj_low[u] == tj_num[u]) {
-        while (true) {
-            int v = tj_stk.back();
-            tj_stk.pop_back();
-            tj_on[v] = false;
-            comp[v] = tj_cnt;
-            if (v == u) break;
+    void dfs(int u) {
+        low[u] = num[u] = timer++;
+        stk.push_back(u);
+        on_stack[u] = true;
+
+        for (int v: g[u]) {
+            if (num[v] == -1) {
+                dfs(v);
+                low[u] = min(low[u], low[v]);
+            } else if (on_stack[v])
+                low[u] = min(low[u], num[v]);
         }
-        tj_cnt++;
+
+        if (low[u] == num[u]) {
+            while (true) {
+                int v = stk.back();
+                stk.pop_back();
+                on_stack[v] = false;
+                comp[v] = scc_count;
+                if (v == u) break;
+            }
+            scc_count++;
+        }
     }
-}
 
-int tarjan_scc() {
-    tj_low.assign(n, 0);
-    tj_num.assign(n, -1);
-    tj_on.assign(n, false);
-    tj_stk.clear();
-    comp.assign(n, -1);
-    tj_timer = tj_cnt = 0;
-
-    for (int u = 0; u < n; u++)
-        if (tj_num[u] == -1) scc_dfs(u);
-    return tj_cnt;
-}
+    int run() {
+        for (int u = 0; u < n; u++)
+            if (num[u] == -1) dfs(u);
+        return scc_count;
+    }
+};
 
 /**
  * Example: two SCCs {0,1,2} and {3,4} linked by edge 2 -> 3.
  */
 int main() {
-    n = 5;
-    g.assign(n, {});
-    g[0].push_back(1);
-    g[1].push_back(2);
-    g[2].push_back(0);
-    g[2].push_back(3);
-    g[3].push_back(4);
-    g[4].push_back(3);
-    cout << tarjan_scc() << "\n";  // -> 2
+    TarjanScc scc(5);
+    scc.add_edge(0, 1);
+    scc.add_edge(1, 2);
+    scc.add_edge(2, 0);
+    scc.add_edge(2, 3);
+    scc.add_edge(3, 4);
+    scc.add_edge(4, 3);
+    cout << scc.run() << "\n";  // -> 2
     return 0;
 }

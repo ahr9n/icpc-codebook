@@ -6,80 +6,87 @@
  * summing to <= k; inclusion-exclusion subtracts pairs sharing a subtree, whose
  * true path never crosses the centroid. Build O(n log n); counting O(n log^2 n).
  */
-vector<vector<int>> adj;
-vector<bool> removed;
-vector<int> sub;
-long long pair_count;
-int dist_limit;
+struct CentroidDecomp {
+    int n, dist_limit = 0;
+    long long pair_count = 0;
+    vector<vector<int>> adj;
+    vector<bool> removed;
+    vector<int> sub;
 
-int calc_size(int u, int p) {
-    sub[u] = 1;
-    for (int w: adj[u])
-        if (w != p and not removed[w]) sub[u] += calc_size(w, u);
-    return sub[u];
-}
+    CentroidDecomp(int n) : n(n), adj(n), removed(n, false), sub(n, 0) {}
 
-int find_centroid(int u, int p, int comp) {
-    for (int w: adj[u])
-        if (w != p and not removed[w] and sub[w] > comp / 2) return find_centroid(w, u, comp);
-    return u;
-}
+    void add_edge(int u, int v) {
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
 
-void collect(int u, int p, int d, vector<int>& out) {
-    out.push_back(d);
-    for (int w: adj[u])
-        if (w != p and not removed[w]) collect(w, u, d + 1, out);
-}
+    int calc_size(int u, int p) {
+        sub[u] = 1;
+        for (int w: adj[u])
+            if (w != p and not removed[w]) sub[u] += calc_size(w, u);
+        return sub[u];
+    }
 
-long long count_pairs(vector<int> dists) {
-    sort(dists.begin(), dists.end());
-    long long cnt = 0;
-    int lo = 0, hi = (int)dists.size() - 1;
-    while (lo < hi) {
-        if (dists[lo] + dists[hi] <= dist_limit) {
-            cnt += hi - lo;
-            lo++;
-        } else {
-            hi--;
+    int find_centroid(int u, int p, int comp) {
+        for (int w: adj[u])
+            if (w != p and not removed[w] and sub[w] > comp / 2) return find_centroid(w, u, comp);
+        return u;
+    }
+
+    void collect(int u, int p, int d, vector<int>& out) {
+        out.push_back(d);
+        for (int w: adj[u])
+            if (w != p and not removed[w]) collect(w, u, d + 1, out);
+    }
+
+    long long count_pairs(vector<int> dists) {
+        sort(dists.begin(), dists.end());
+        long long cnt = 0;
+        int lo = 0, hi = (int)dists.size() - 1;
+        while (lo < hi) {
+            if (dists[lo] + dists[hi] <= dist_limit) {
+                cnt += hi - lo;
+                lo++;
+            } else {
+                hi--;
+            }
         }
+        return cnt;
     }
-    return cnt;
-}
 
-void decompose(int entry) {
-    int comp = calc_size(entry, -1);
-    int c = find_centroid(entry, -1, comp);
-    vector<int> all;
-    collect(c, -1, 0, all);
-    pair_count += count_pairs(all);
-    for (int w: adj[c]) {
-        if (removed[w]) continue;
-        vector<int> branch;
-        collect(w, c, 1, branch);
-        pair_count -= count_pairs(branch);
+    void decompose(int entry) {
+        int comp = calc_size(entry, -1);
+        int c = find_centroid(entry, -1, comp);
+        vector<int> all;
+        collect(c, -1, 0, all);
+        pair_count += count_pairs(all);
+        for (int w: adj[c]) {
+            if (removed[w]) continue;
+            vector<int> branch;
+            collect(w, c, 1, branch);
+            pair_count -= count_pairs(branch);
+        }
+        removed[c] = true;
+        for (int w: adj[c])
+            if (not removed[w]) decompose(w);
     }
-    removed[c] = true;
-    for (int w: adj[c])
-        if (not removed[w]) decompose(w);
-}
+
+    long long count_within(int k) {
+        dist_limit = k;
+        pair_count = 0;
+        decompose(0);
+        return pair_count;
+    }
+};
 
 /**
  * Example: tree 0-{1,2}, 1-{3,4}, 2-{5,6}. Pairs at distance <= 2 number 13
  * (6 adjacent plus 7 at distance exactly 2).
  */
 int main() {
-    int n = 7;
-    adj.assign(n, {});
-    removed.assign(n, false);
-    sub.assign(n, 0);
+    CentroidDecomp cd(7);
     int edges[6][2] = {{0, 1}, {0, 2}, {1, 3}, {1, 4}, {2, 5}, {2, 6}};
-    for (auto& e: edges) {
-        adj[e[0]].push_back(e[1]);
-        adj[e[1]].push_back(e[0]);
-    }
-    dist_limit = 2;
-    pair_count = 0;
-    decompose(0);
-    cout << pair_count << "\n";  // -> 13
+    for (auto& e: edges) cd.add_edge(e[0], e[1]);
+    cout << cd.count_within(2) << "\n";  // -> 13
     return 0;
 }
