@@ -17,7 +17,8 @@ src/
                           LCA, tree diameter, cycles, Euler tour
   04-dynamic-programming/ knapsack, LCS/LIS, interval, bitmask, tree, digit, games
                           (each with both iterative and recursive versions)
-  05-strings/             KMP, Z, hashing, trie
+  05-strings/             KMP, Z, hashing, trie, Manacher, suffix array + LCP
+                          (O(n log²n) + O(n log n) radix), Aho-Corasick
   06-number-theory/       modpow, inverse, sieves, factorize, phi, ext-gcd, CRT, nCr
   07-geometry/            point primitives, orientation, polygons, convex hull
   08-flow/                Dinic max-flow, Kuhn bipartite matching

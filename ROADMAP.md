@@ -10,7 +10,7 @@ Pure-STL basics (stack, queue, vector, sort, ...) are assumed known and omitted.
 
 ### Phase 1 — common, medium effort
 - [ ] **2-SAT** (implication graph + SCC — you already have Tarjan)
-- [ ] **Suffix array + LCP** (Kasai)
+- [x] **Suffix array + LCP** (Kasai) — O(n log²n) and O(n log n) radix builds
 - [ ] **Min-cost max-flow** (SPFA/Dijkstra potentials)
 - [ ] **Closest pair of points** (line sweep) — the one geometry gap
 - [ ] **Combinatorics kit**: inclusion–exclusion, Catalan, Lucas' theorem
@@ -21,7 +21,7 @@ Pure-STL basics (stack, queue, vector, sort, ...) are assumed known and omitted.
 ### Phase 2 — advanced, higher effort
 - [ ] **Heavy-light decomposition** (path queries)
 - [ ] **Centroid decomposition**, **DSU on tree (small-to-large)**
-- [ ] **Aho-Corasick**, **Manacher**, **suffix automaton**
+- [x] **Aho-Corasick**, **Manacher** — [ ] **suffix automaton**
 - [ ] **DP optimizations**: convex hull trick, divide-and-conquer, Knuth
 - [ ] **Geometry**: rotating calipers, Pick's theorem, polygon triangulation, half-plane
 - [ ] **Discrete log (BSGS)**, **primitive roots**, **NTT/FFT**
@@ -44,7 +44,7 @@ Pure-STL basics (stack, queue, vector, sort, ...) are assumed known and omitted.
 
 ### Strings
 - [x] KMP (prefix function), Z-function, polynomial hashing, Trie
-- [ ] Aho-Corasick, Manacher, suffix array + LCP
+- [x] Manacher, suffix array + LCP (O(n log²n) + O(n log n) radix), Aho-Corasick
 - [ ] Suffix automaton / suffix tree, Lyndon (Duval)
 
 ### Graph
