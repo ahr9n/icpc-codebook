@@ -1,23 +1,22 @@
 /**
- * Sparse table: O(1) range query for idempotent ops (min/max/gcd) after O(n log n)
- * build. NOT for sum. query on inclusive [l, r]; here it answers range minimum.
+ * Sparse table: O(1) range query for idempotent ops (min/max/gcd). O(n log n) build.
+ * table[i][j] = op over a[i .. i + 2^j - 1]. NOT for sum. query is inclusive [l, r].
  */
 struct SparseTable {
     vector<vector<long long>> table;
 
     SparseTable(vector<long long>& a) {
-        int n = a.size(), logn = 1;
-        while ((1 << logn) < n) logn++;
-        table.assign(logn + 1, vector<long long>(n));
-        table[0] = a;
-        for (int k = 1; k <= logn; k++)
-            for (int i = 0; i + (1 << k) <= n; i++)
-                table[k][i] = min(table[k - 1][i], table[k - 1][i + (1 << (k - 1))]);
+        int n = a.size(), logn = __lg(n) + 1;
+        table.assign(n, vector<long long>(logn));
+        for (int i = 0; i < n; i++) table[i][0] = a[i];
+        for (int j = 1; (1 << j) <= n; j++)
+            for (int i = 0; i + (1 << j) <= n; i++)
+                table[i][j] = min(table[i][j - 1], table[i + (1 << (j - 1))][j - 1]);
     }
 
     long long query(int l, int r) {
-        int k = __lg(r - l + 1);
-        return min(table[k][l], table[k][r - (1 << k) + 1]);
+        int j = __lg(r - l + 1);
+        return min(table[l][j], table[r - (1 << j) + 1][j]);
     }
 };
 
