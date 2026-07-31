@@ -1,10 +1,12 @@
 # Competitive Programming Codebook
 
-My personal competitive-programming codebook — clean, printable C++ implementations
-of the algorithms and data structures I reach for in contests.
+Clean, printable C++ implementations of the algorithms I use in contests.
 
-The document is built from `src/`: each subdirectory is a section and each `.cpp`
-file is a subsection, assembled into a landscape two-column PDF via LaTeX.
+Built from `src/`: each subdirectory is a section, each `.cpp` a subsection,
+assembled into a landscape two-column PDF via LaTeX. Files are numbered to fix
+section/subsection order. Every listing is self-contained — it declares only the
+globals it uses (the template's includes and constants are assumed in scope), so
+any snippet copies on its own, and carries a worked `main()` demo.
 
 ## Layout
 
@@ -17,30 +19,23 @@ src/
                           LCA, tree diameter, cycles, Euler tour, 2-SAT,
                           Euler circuit/path (Hierholzer)
   04-dynamic-programming/ knapsack, LCS/LIS, interval, bitmask, tree, digit, games
-                          (each with both iterative and recursive versions)
-  05-strings/             KMP, Z, hashing, trie, Manacher, suffix array + LCP
-                          (O(n log²n) + O(n log n) radix), LCE, Aho-Corasick
+                          (iterative + recursive versions)
+  05-strings/             KMP, Z, hashing, trie, Manacher, suffix array + LCP, LCE,
+                          Aho-Corasick
   06-number-theory/       modpow, inverse, sieves, factorize, phi, ext-gcd, CRT, nCr
   07-geometry/            point primitives, orientation, polygons, convex hull
-  08-flow/                Dinic max-flow, Kuhn + Hopcroft-Karp bipartite matching,
+  08-flow/                Dinic max-flow, Kuhn + Hopcroft-Karp matching,
                           min-cost max-flow (SPFA)
   09-math/                matrix exponentiation, big integer arithmetic
   10-bitmask/             bit ops, lowest-bit, gray code, subset/submask enumeration
-  11-probability/         probability (distribution) DP, expected-value DP
-                          (law of total expectation, self-loop algebra)
+  11-probability/         distribution DP, expected-value DP (self-loop algebra)
   12-misc/                Kadane, sliding window, binary/ternary search, MITM,
-                          coordinate compression, inversion count, randomness (mt19937_64)
+                          coordinate compression, inversion count, mt19937_64
 ```
-
-Files are numbered to control section and subsection order. Each listing is
-self-contained: it declares at the top only the globals it uses (assuming the
-contest template's includes and constants are in scope), so any single snippet
-can be copied on its own. Worked `main()` examples are embedded in the algorithm
-file they demonstrate.
 
 ## Build
 
-Requires `python3` and a LaTeX toolchain with `pdflatex`.
+Needs `python3` and a LaTeX toolchain with `pdflatex`.
 
 ```
 # macOS: brew install --cask mactex   (or basictex for a smaller install)
@@ -48,5 +43,5 @@ Requires `python3` and a LaTeX toolchain with `pdflatex`.
 build.bat           # Windows
 ```
 
-`build.sh` regenerates `contents.tex` from `src/` (via `build-contents.py`), then
-runs `pdflatex` twice so the table of contents resolves.
+`build.sh` regenerates `contents.tex` from `src/`, then runs `pdflatex` twice so
+the table of contents resolves.

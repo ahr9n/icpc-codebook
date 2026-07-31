@@ -1,19 +1,12 @@
-# ICPC Mastery Roadmap
+# ICPC Roadmap
 
-Coverage of the codebook against the practical CP topic map, organized into the
-eight standard categories. Within each category, items are listed roughly
-**easy → hard**, mirroring the `NN-` file numbering in `src/` (a low number is a
-prerequisite for the higher ones), so the list doubles as a study order.
-
-Markers: `[x]` implemented in `src/`, `[~]` partially covered, `[ ]` planned.
-Pure-STL basics (`std::string`, `std::vector`, `std::sort`, stack/queue/deque,
-`std::algorithm`, …) are assumed known and omitted. Scope is **practical
-contest / top-tier-interview** material — a short "out of scope" list at the end
-records what was deliberately dropped as too theoretical to carry.
+Codebook coverage. `[x]` done, `[~]` partial, `[ ]` planned. Within a category
+items run easy → hard, matching the `NN-` order in `src/`, so the list is also a
+study order. Pure-STL basics are assumed and omitted.
 
 ---
 
-## Recommended next additions (highest ROI first)
+## Next additions
 
 - [ ] **Combinatorics kit**: inclusion–exclusion, Catalan, Lucas
 - [ ] **Gaussian elimination** (linear systems + XOR basis)
@@ -152,23 +145,18 @@ records what was deliberately dropped as too theoretical to carry.
 
 ---
 
-## Explicitly out of scope
+## Out of scope
 
-Dropped as too theoretical / rarely-if-ever contest-decisive, so the codebook
-stays lean: link-cut & fibonacci-heap & skip-list & kd / PQ / cover trees,
-dynamic connectivity, and heavier wavelet-tree machinery beyond the note above;
-suffix tree (automaton covers the need), PATRICIA tree; dominator tree,
-minimum-diameter / directed MST, LexBFS, mixed-graph Euler; Voronoi / Delaunay,
-Fortune's & Bentley–Ottmann sweeps, 3D convex hull, quaternions; Tutte /
-Kirchhoff matrix, Prüfer, Bernoulli / Bell / Stirling tables, Farey, adaptive
-Simpson, Lagrange multipliers; Tonelli–Shanks / Cipolla, Cornacchia,
-Pohlig–Hellman, Pollard's kangaroo, Pell's equation, wheel factorization,
-Method of Four Russians; Blossom-W scheduling variants, flow-circulation edge
-cases, Markov chains, POSets, Babbage's difference engine.
+Dropped as too theoretical or rarely contest-decisive: link-cut / fibonacci-heap /
+skip-list / kd trees, dynamic connectivity, wavelet trees, suffix/PATRICIA tree;
+dominator tree, directed MST, LexBFS; Voronoi/Delaunay, sweep-line geometry,
+3D hull; Kirchhoff/Prüfer, Bell/Stirling tables, Lagrange multipliers;
+Tonelli–Shanks, Pohlig–Hellman, Pell, wheel factorization; Blossom-W, flow
+circulation, Markov chains.
 
 ---
 
 ## Skills to drill (not codebook entries)
-- Greedy exchange-argument proofs; backtracking with bounding / pruning
-- Amortized & complexity analysis under contest constraints
+- Greedy exchange-argument proofs; backtracking with pruning
+- Amortized / complexity analysis under contest constraints
 - Reading a problem → picking the paradigm fast (the real bottleneck)
