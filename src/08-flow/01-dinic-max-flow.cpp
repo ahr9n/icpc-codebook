@@ -23,11 +23,11 @@ struct Dinic {
         edges.push_back({u, 0});
     }
 
-    bool bfs(int s, int t) {
+    bool bfs(int src, int sink) {
         fill(level.begin(), level.end(), -1);
         queue<int> q;
-        level[s] = 0;
-        q.push(s);
+        level[src] = 0;
+        q.push(src);
         while (not q.empty()) {
             int u = q.front();
             q.pop();
@@ -38,29 +38,29 @@ struct Dinic {
                 }
             }
         }
-        return level[t] != -1;
+        return level[sink] != -1;
     }
 
-    long long dfs(int u, int t, long long pushed) {
-        if (u == t or pushed == 0) return pushed;
+    long long dfs(int u, int sink, long long pushed) {
+        if (u == sink or pushed == 0) return pushed;
         for (int& i = it[u]; i < (int)g[u].size(); i++) {
             int id = g[u][i], v = edges[id].to;
             if (edges[id].cap <= 0 or level[v] != level[u] + 1) continue;
-            long long tr = dfs(v, t, min(pushed, edges[id].cap));
-            if (tr > 0) {
-                edges[id].cap -= tr;
-                edges[id ^ 1].cap += tr;
-                return tr;
+            long long sent = dfs(v, sink, min(pushed, edges[id].cap));
+            if (sent > 0) {
+                edges[id].cap -= sent;
+                edges[id ^ 1].cap += sent;
+                return sent;
             }
         }
         return 0;
     }
 
-    long long max_flow(int s, int t) {
+    long long max_flow(int src, int sink) {
         long long flow = 0;
-        while (bfs(s, t)) {
+        while (bfs(src, sink)) {
             fill(it.begin(), it.end(), 0);
-            while (long long f = dfs(s, t, LINF)) flow += f;
+            while (long long f = dfs(src, sink, LINF)) flow += f;
         }
         return flow;
     }

@@ -4,20 +4,20 @@
  */
 struct StringHash {
     long long mod = 1e9 + 9, base = 131;
-    vector<long long> h, p;
+    vector<long long> pre_hash, base_pow;
 
     StringHash(string& s) {
         int len = s.size();
-        h.assign(len + 1, 0);
-        p.assign(len + 1, 1);
+        pre_hash.assign(len + 1, 0);
+        base_pow.assign(len + 1, 1);
         for (int i = 0; i < len; i++) {
-            h[i + 1] = (h[i] * base + s[i]) % mod;
-            p[i + 1] = p[i] * base % mod;
+            pre_hash[i + 1] = (pre_hash[i] * base + s[i]) % mod;
+            base_pow[i + 1] = base_pow[i] * base % mod;
         }
     }
 
     long long get(int l, int r) {
-        return ((h[r + 1] - h[l] * p[r - l + 1]) % mod + mod) % mod;
+        return ((pre_hash[r + 1] - pre_hash[l] * base_pow[r - l + 1]) % mod + mod) % mod;
     }
 };
 

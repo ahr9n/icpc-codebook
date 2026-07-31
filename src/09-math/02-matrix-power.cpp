@@ -2,16 +2,16 @@
  * Matrix exponentiation: mat^p under MOD. Linear recurrences (Fibonacci, path counts,
  * DP transitions) in O(k^3 log p). Start from the identity matrix.
  */
-vector<vector<long long>> mat_pow(vector<vector<long long>> a, long long p) {
-    int k = a.size();
-    vector<vector<long long>> r(k, vector<long long>(k, 0));
-    for (int i = 0; i < k; i++) r[i][i] = 1;
-    while (p) {
-        if (p & 1) r = mat_mul(r, a);
-        a = mat_mul(a, a);
-        p >>= 1;
+vector<vector<long long>> mat_pow(vector<vector<long long>> base, long long exp) {
+    int dim = base.size();
+    vector<vector<long long>> result(dim, vector<long long>(dim, 0));
+    for (int i = 0; i < dim; i++) result[i][i] = 1;
+    while (exp) {
+        if (exp & 1) result = mat_mul(result, base);
+        base = mat_mul(base, base);
+        exp >>= 1;
     }
-    return r;
+    return result;
 }
 
 /**

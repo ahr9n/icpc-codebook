@@ -16,24 +16,24 @@ struct SegTreeRec {
         return {l.val + r.val};
     }
 
-    void update(int i, int s, int e, int pos, long long val) {
-        if (s == e) {
+    void update(int i, int lo, int hi, int pos, long long val) {
+        if (lo == hi) {
             tree[i].val = val;
             return;
         }
-        int mid = (s + e) / 2;
+        int mid = (lo + hi) / 2;
         if (pos <= mid)
-            update(2 * i, s, mid, pos, val);
+            update(2 * i, lo, mid, pos, val);
         else
-            update(2 * i + 1, mid + 1, e, pos, val);
+            update(2 * i + 1, mid + 1, hi, pos, val);
         tree[i] = merge(tree[2 * i], tree[2 * i + 1]);
     }
 
-    Node query(int i, int s, int e, int l, int r) {
-        if (r < s or e < l) return Node{};
-        if (l <= s and e <= r) return tree[i];
-        int mid = (s + e) / 2;
-        return merge(query(2 * i, s, mid, l, r), query(2 * i + 1, mid + 1, e, l, r));
+    Node query(int i, int lo, int hi, int l, int r) {
+        if (r < lo or hi < l) return Node{};
+        if (l <= lo and hi <= r) return tree[i];
+        int mid = (lo + hi) / 2;
+        return merge(query(2 * i, lo, mid, l, r), query(2 * i + 1, mid + 1, hi, l, r));
     }
 };
 

@@ -12,10 +12,10 @@ long long digit_dp(int pos, int rem, bool tight) {
     if (pos == (int)num.size()) return rem == 0;
     if (not tight and dp[pos][rem] != -1) return dp[pos][rem];
 
-    int hi = tight ? num[pos] - '0' : 9;
+    int max_digit = tight ? num[pos] - '0' : 9;
     long long res = 0;
-    for (int d = 0; d <= hi; d++)
-        res = (res + digit_dp(pos + 1, (rem + d) % D, tight and d == hi)) % MOD;
+    for (int d = 0; d <= max_digit; d++)
+        res = (res + digit_dp(pos + 1, (rem + d) % D, tight and d == max_digit)) % MOD;
 
     if (not tight) dp[pos][rem] = res;
     return res;
