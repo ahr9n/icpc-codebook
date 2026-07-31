@@ -1,107 +1,174 @@
 # ICPC Mastery Roadmap
 
-Coverage of the codebook against the full CP topic map, plus prioritized next
-steps. `[x]` = implemented in `src/`, `[~]` = partially covered, `[ ]` = not yet.
-Pure-STL basics (stack, queue, vector, sort, ...) are assumed known and omitted.
+Coverage of the codebook against the practical CP topic map, organized into the
+eight standard categories. Within each category, items are listed roughly
+**easy → hard**, mirroring the `NN-` file numbering in `src/` (a low number is a
+prerequisite for the higher ones), so the list doubles as a study order.
+
+Markers: `[x]` implemented in `src/`, `[~]` partially covered, `[ ]` planned.
+Pure-STL basics (`std::string`, `std::vector`, `std::sort`, stack/queue/deque,
+`std::algorithm`, …) are assumed known and omitted. Scope is **practical
+contest / top-tier-interview** material — a short "out of scope" list at the end
+records what was deliberately dropped as too theoretical to carry.
 
 ---
 
 ## Recommended next additions (highest ROI first)
 
-### Phase 1 — common, medium effort
-- [ ] **2-SAT** (implication graph + SCC — you already have Tarjan)
-- [x] **Suffix array + LCP** (Kasai) — O(n log²n) and O(n log n) radix builds
-- [ ] **Min-cost max-flow** (SPFA/Dijkstra potentials)
-- [ ] **Closest pair of points** (line sweep) — the one geometry gap
-- [ ] **Combinatorics kit**: inclusion–exclusion, Catalan, Lucas' theorem
-- [ ] **Gaussian elimination** (linear systems, XOR basis)
-- [ ] **Miller–Rabin + Pollard's rho** (fast factorization of big n)
-- [ ] **Matrix-chain DP** (classical interval DP you don't have yet)
-
-### Phase 2 — advanced, higher effort
-- [ ] **Heavy-light decomposition** (path queries)
-- [ ] **Centroid decomposition**, **DSU on tree (small-to-large)**
-- [x] **Aho-Corasick**, **Manacher** — [ ] **suffix automaton**
-- [ ] **DP optimizations**: convex hull trick, divide-and-conquer, Knuth
-- [ ] **Geometry**: rotating calipers, Pick's theorem, polygon triangulation, half-plane
-- [ ] **Discrete log (BSGS)**, **primitive roots**, **NTT/FFT**
+- [ ] **Combinatorics kit**: inclusion–exclusion, Catalan, Lucas
+- [ ] **Gaussian elimination** (linear systems + XOR basis)
+- [ ] **Miller–Rabin + Pollard's rho** (factor big `n`)
+- [ ] **Closest pair of points** (line sweep) — the main geometry gap
+- [ ] **Monotonic stack / queue** (sliding-window minimum, histogram)
+- [ ] **Matrix-chain DP** (the classic interval DP still missing)
+- [ ] **FFT / NTT** (polynomial / big-number multiply, convolutions)
+- [ ] **HLD** and **centroid decomposition** (tree path / distance queries)
+- [ ] **Suffix automaton** (substring counting, longest common substring)
+- [ ] **Hungarian algorithm** (assignment / min-cost perfect matching)
 
 ---
 
 ## Coverage by category
 
-### Data Structures
+### 1. Data Structures
 - [x] DSU (union by size + path compression)
-- [x] Segment tree — iterative, recursive (mergeable node), lazy propagation
-- [x] Difference array, 2D prefix sums
-- [x] MO's algorithm (sqrt decomposition, offline)
-- [x] Fenwick / BIT
 - [x] Sparse table (idempotent RMQ)
-- [ ] 2D BIT
+- [x] Fenwick / BIT
+- [x] Difference array, 2D prefix sums
+- [x] Segment tree — iterative, recursive (mergeable node), lazy propagation
+- [x] Sqrt decomposition + MO's algorithm (offline range queries)
 - [ ] Monotonic stack / queue
-- [ ] Persistent / merge-sort segment tree, segment tree beats, Li Chao
-- [ ] Balanced BST internals (treap/splay) — use `std::set` in practice
+- [ ] 2D BIT / 2D segment tree
+- [ ] Order-statistics tree (policy tree) / treap (split-merge, order statistics)
+- [ ] Merge-sort segment tree (offline range rank / k-th)
+- [ ] Persistent segment tree (k-th on a path, historic queries)
+- [ ] Li Chao tree, segment tree beats
+- [ ] Sqrt tree, wavelet tree
 
-### Strings
-- [x] KMP (prefix function), Z-function, polynomial hashing, Trie
-- [x] Manacher, suffix array + LCP (O(n log²n) + O(n log n) radix), Aho-Corasick
-- [x] Longest common extension (LCE) — hashing + binary search, O(log n)/query
-- [ ] Suffix automaton / suffix tree, Lyndon (Duval)
+### 2. Strings
+- [x] KMP (prefix function)
+- [x] Z-function
+- [x] Polynomial hashing (double mod) + longest common extension (LCE)
+- [x] Trie
+- [x] Manacher (all palindromic radii)
+- [x] Aho-Corasick (multi-pattern matching)
+- [x] Suffix array + LCP — O(n log²n) and O(n log n) radix builds
+- [ ] Suffix automaton
+- [ ] Lyndon decomposition (Duval), minimal rotation
+- [ ] Palindromic tree (eertree)
 
-### Graph
+### 3. Graph
 - [x] BFS, DFS, 0-1 BFS, multi-source BFS
-- [x] Dijkstra, Bellman-Ford (+ k-edges, + negative cycle), Floyd-Warshall
-- [x] Prim, Kruskal (MST)
 - [x] Kahn topological sort, bipartite check, directed-cycle detection
-- [x] Tarjan SCC, bridges & articulation points, LCA (binary lifting), tree diameter
+- [x] Dijkstra, Bellman-Ford (+ k-edges, + negative-cycle), Floyd-Warshall
 - [x] Min-bottleneck (min-effort) grid
-- [x] Euler tour / tree flattening
-- [ ] Euler circuit/path, 2-SAT
-- [ ] Biconnected components / block-cut & bridge trees
-- [ ] HLD, centroid decomposition, DSU on tree, dominator tree
-- [ ] Shortest-path counting, min-mean cycle, stable marriage
+- [x] Prim, Kruskal (MST)
+- [x] Tree diameter, Euler tour / tree flattening
+- [x] LCA (binary lifting)
+- [x] Tarjan SCC, bridges & articulation points
+- [x] Euler path / circuit (Hierholzer)
+- [x] 2-SAT (implication graph + SCC)
+- [ ] Functional-graph cycle finding (tortoise–hare / rho)
+- [ ] Biconnected components, block-cut tree, bridge tree
+- [ ] Shortest-path counting, min-mean cycle
+- [ ] Small-to-large on trees (DSU on tree / sack)
+- [ ] Heavy-light decomposition (path queries)
+- [ ] Centroid decomposition (distance queries)
+- [ ] Stable marriage (Gale–Shapley)
 
-### DP & Paradigms
-- [x] Knapsack (0/1, by value, 2D), coin-change counting
-- [x] LCS, LIS (n log n), edit distance, interval (slimes)
-- [x] Bitmask matching, tree DP, digit DP
-- [x] Game theory: win/lose states, Nim, Grundy, minimax interval
-- [x] Binary search on answer (int + real), ternary search, meet in the middle
-- [x] Probability (distribution) DP, expected-value DP (law of total expectation, self-loop algebra)
-- [~] Matrix-chain, DP with memory reduction, cyclic/self-referential DP (self-loop expectations covered)
-- [ ] DP optimizations (CHT, D&C, Knuth), backtracking with pruning
+### 4. Problem Solving Paradigms
+- [x] Binary search on answer (integer + real), ternary search
+- [x] Meet in the middle
+- [x] 0/1, by-value, 2D knapsack; coin-change counting
+- [x] LCS, edit distance, LIS (O(n log n))
+- [x] Interval DP (slimes), minimax interval
+- [x] Bitmask DP (assignment matching)
+- [x] Tree DP, digit DP
+- [x] Game theory: win/lose states, Nim, Grundy
+- [x] Probability (distribution) DP, expected-value DP (self-loop algebra)
+- [ ] Backtracking with pruning
+- [ ] Matrix-chain multiplication (classical interval DP)
+- [ ] Subset-sum-over-subsets (SOS) DP
+- [ ] Memory-reduction (rolling) + Hirschberg (LCS in O(n) memory)
+- [ ] DP optimizations: convex hull trick, divide-and-conquer, Knuth
+- [ ] Parallel binary search
 
-### Number Theory & Math
-- [x] Modular exponentiation, modular inverse, gcd, lcm
-- [x] Sieve, linear sieve (SPF), trial-division factorize, Euler phi
-- [x] Extended gcd, CRT, Pascal nCr, modular nCr
-- [x] Matrix exponentiation
-- [ ] Inclusion–exclusion, Catalan, Lucas, Stirling, Möbius, Burnside
-- [ ] Gaussian elimination / determinant, Miller-Rabin + Pollard rho
-- [ ] Discrete log (BSGS), Lagrange interpolation, FFT/NTT
+### 5. Math
+- [x] gcd, lcm, binary (fast) exponentiation
+- [x] Modular exponentiation, modular inverse
+- [x] Sieve, linear sieve (smallest prime factor), trial-division factorize
+- [x] Euler phi
+- [x] Extended gcd, CRT
+- [x] Pascal nCr, modular nCr (factorials + inverse factorials)
+- [x] Matrix multiply / exponentiation (linear-recurrence & path counting)
+- [ ] Fast Fibonacci (fast doubling)
+- [ ] Inclusion–exclusion, Catalan numbers
+- [ ] Lucas' theorem, factorial mod p
+- [ ] Möbius / multiplicative functions
+- [ ] Burnside / Pólya counting
+- [ ] Gaussian elimination, determinant, XOR (linear) basis
+- [ ] Miller–Rabin + Pollard's rho (deterministic 64-bit)
+- [ ] Discrete log (baby-step giant-step), primitive roots
+- [ ] Lagrange interpolation
+- [ ] FFT / NTT (convolutions, polynomial & big-number multiply)
 
-### Geometry
+### 6. Geometry
 - [x] Point primitives (cross, dot, orientation)
-- [x] Segment intersection, polygon area (shoelace), point in polygon
+- [x] Segment intersection
+- [x] Polygon area (shoelace), point in polygon
 - [x] Convex hull (Andrew's monotone chain)
-- [ ] Closest pair (line sweep), rotating calipers, Pick's theorem
-- [ ] Line/circle intersection, half-plane intersection, polygon triangulation
-- [ ] Voronoi / Delaunay, 3D geometry
+- [ ] Line / circle intersection, circle construction
+- [ ] Closest pair of points (line sweep)
+- [ ] Rotating calipers (diameter, width, closest/farthest pair on hull)
+- [ ] Pick's theorem
+- [ ] Half-plane intersection
+- [ ] Line sweep / radial sweep as reusable patterns
+- [ ] Polygon triangulation
+- [ ] Area of union / intersection of circles
 
-### Flow & Matching
-- [x] Dinic max-flow, Kuhn bipartite matching
-- [ ] Min-cost max-flow, Hopcroft-Karp, Hungarian
-- [ ] Flows with lower bounds / demands, Gomory-Hu, global min-cut (Stoer-Wagner)
+### 7. Combinatorial Optimization (flow & matching)
+- [x] Dinic max-flow
+- [x] Kuhn bipartite matching
+- [x] Min-cost max-flow (SPFA successive shortest paths)
+- [x] Hopcroft–Karp (fast bipartite matching)
+- [ ] Hungarian algorithm (assignment / min-cost perfect matching)
+- [ ] Difference constraints (shortest paths ↔ inequalities)
+- [ ] Flows with lower bounds / demands
+- [ ] Global min-cut (Stoer–Wagner), all-pairs min-cut (Gomory–Hu)
+- [ ] General matching (Blossom) — reference only
 
-### Misc
-- [x] Kadane, sliding window / two pointers, coordinate compression, inversion count
-- [x] Randomness kit (mt19937_64: robust seeding, unbiased range, shuffle)
+### 8. Misc
+- [x] Kadane (max subarray)
+- [x] Sliding window / two pointers
+- [x] Coordinate compression
+- [x] Inversion count
+- [x] Bit tricks (lowest bit, gray code, subset / submask enumeration)
+- [x] Randomness kit (mt19937_64: seeding, unbiased range, shuffle)
+- [ ] Custom sorts (counting, radix) + when to beat `std::sort`
+- [ ] Kadane in 2D (max submatrix)
+- [ ] Newton / secant root finding
 - [ ] DP-table path reconstruction as a reusable pattern
-- [ ] Amortized-analysis intuition, custom sorts (counting/radix)
+- [ ] Amortized-analysis intuition under contest constraints
+
+---
+
+## Explicitly out of scope
+
+Dropped as too theoretical / rarely-if-ever contest-decisive, so the codebook
+stays lean: link-cut & fibonacci-heap & skip-list & kd / PQ / cover trees,
+dynamic connectivity, and heavier wavelet-tree machinery beyond the note above;
+suffix tree (automaton covers the need), PATRICIA tree; dominator tree,
+minimum-diameter / directed MST, LexBFS, mixed-graph Euler; Voronoi / Delaunay,
+Fortune's & Bentley–Ottmann sweeps, 3D convex hull, quaternions; Tutte /
+Kirchhoff matrix, Prüfer, Bernoulli / Bell / Stirling tables, Farey, adaptive
+Simpson, Lagrange multipliers; Tonelli–Shanks / Cipolla, Cornacchia,
+Pohlig–Hellman, Pollard's kangaroo, Pell's equation, wheel factorization,
+Method of Four Russians; Blossom-W scheduling variants, flow-circulation edge
+cases, Markov chains, POSets, Babbage's difference engine.
 
 ---
 
 ## Skills to drill (not codebook entries)
-- Greedy exchange-argument proofs; backtracking with bounding/pruning
+- Greedy exchange-argument proofs; backtracking with bounding / pruning
 - Amortized & complexity analysis under contest constraints
 - Reading a problem → picking the paradigm fast (the real bottleneck)

@@ -14,14 +14,16 @@ src/
   02-data-structures/     DSU, segment trees (iter/recursive/lazy), Fenwick/BIT,
                           sparse table, difference array, 2D prefix sums, MO's
   03-graph/               BFS/DFS/0-1-BFS, shortest paths, MST, topo, SCC, bridges,
-                          LCA, tree diameter, cycles, Euler tour
+                          LCA, tree diameter, cycles, Euler tour, 2-SAT,
+                          Euler circuit/path (Hierholzer)
   04-dynamic-programming/ knapsack, LCS/LIS, interval, bitmask, tree, digit, games
                           (each with both iterative and recursive versions)
   05-strings/             KMP, Z, hashing, trie, Manacher, suffix array + LCP
                           (O(n log²n) + O(n log n) radix), LCE, Aho-Corasick
   06-number-theory/       modpow, inverse, sieves, factorize, phi, ext-gcd, CRT, nCr
   07-geometry/            point primitives, orientation, polygons, convex hull
-  08-flow/                Dinic max-flow, Kuhn bipartite matching
+  08-flow/                Dinic max-flow, Kuhn + Hopcroft-Karp bipartite matching,
+                          min-cost max-flow (SPFA)
   09-math/                matrix exponentiation, big integer arithmetic
   10-bitmask/             bit ops, lowest-bit, gray code, subset/submask enumeration
   11-probability/         probability (distribution) DP, expected-value DP
