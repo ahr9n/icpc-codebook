@@ -6,7 +6,10 @@ struct SparseTable {
     vector<vector<long long>> table;
 
     SparseTable(vector<long long>& a) {
-        int n = a.size(), logn = __lg(n) + 1;
+        int n = a.size();
+        if (n == 0) return;
+
+        int logn = __lg(n) + 1;
         table.assign(n, vector<long long>(logn));
         for (int i = 0; i < n; i++) table[i][0] = a[i];
         for (int j = 1; (1 << j) <= n; j++)

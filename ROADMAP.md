@@ -45,6 +45,7 @@ Pure-STL basics (stack, queue, vector, sort, ...) are assumed known and omitted.
 ### Strings
 - [x] KMP (prefix function), Z-function, polynomial hashing, Trie
 - [x] Manacher, suffix array + LCP (O(n log²n) + O(n log n) radix), Aho-Corasick
+- [x] Longest common extension (LCE) — hashing + binary search, O(log n)/query
 - [ ] Suffix automaton / suffix tree, Lyndon (Duval)
 
 ### Graph
@@ -66,7 +67,8 @@ Pure-STL basics (stack, queue, vector, sort, ...) are assumed known and omitted.
 - [x] Bitmask matching, tree DP, digit DP
 - [x] Game theory: win/lose states, Nim, Grundy, minimax interval
 - [x] Binary search on answer (int + real), ternary search, meet in the middle
-- [ ] Matrix-chain, DP with memory reduction, cyclic/self-referential DP
+- [x] Probability (distribution) DP, expected-value DP (law of total expectation, self-loop algebra)
+- [~] Matrix-chain, DP with memory reduction, cyclic/self-referential DP (self-loop expectations covered)
 - [ ] DP optimizations (CHT, D&C, Knuth), backtracking with pruning
 
 ### Number Theory & Math
@@ -93,6 +95,7 @@ Pure-STL basics (stack, queue, vector, sort, ...) are assumed known and omitted.
 
 ### Misc
 - [x] Kadane, sliding window / two pointers, coordinate compression, inversion count
+- [x] Randomness kit (mt19937_64: robust seeding, unbiased range, shuffle)
 - [ ] DP-table path reconstruction as a reusable pattern
 - [ ] Amortized-analysis intuition, custom sorts (counting/radix)
 

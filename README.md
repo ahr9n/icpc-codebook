@@ -18,14 +18,16 @@ src/
   04-dynamic-programming/ knapsack, LCS/LIS, interval, bitmask, tree, digit, games
                           (each with both iterative and recursive versions)
   05-strings/             KMP, Z, hashing, trie, Manacher, suffix array + LCP
-                          (O(n log²n) + O(n log n) radix), Aho-Corasick
+                          (O(n log²n) + O(n log n) radix), LCE, Aho-Corasick
   06-number-theory/       modpow, inverse, sieves, factorize, phi, ext-gcd, CRT, nCr
   07-geometry/            point primitives, orientation, polygons, convex hull
   08-flow/                Dinic max-flow, Kuhn bipartite matching
   09-math/                matrix exponentiation, big integer arithmetic
   10-bitmask/             bit ops, lowest-bit, gray code, subset/submask enumeration
-  11-misc/                Kadane, sliding window, binary/ternary search, MITM,
-                          coordinate compression, inversion count
+  11-probability/         probability (distribution) DP, expected-value DP
+                          (law of total expectation, self-loop algebra)
+  12-misc/                Kadane, sliding window, binary/ternary search, MITM,
+                          coordinate compression, inversion count, randomness (mt19937_64)
 ```
 
 Files are numbered to control section and subsection order. Each listing is
