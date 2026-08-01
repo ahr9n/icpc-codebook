@@ -7,22 +7,28 @@
  * Precondition: cost must satisfy the quadrangle inequality
  *   cost(a, c) + cost(b, d) <= cost(a, d) + cost(b, c)   for a <= b <= c <= d
  * and be monotone on intervals (cost(b, c) <= cost(a, d) when [b,c] subset [a,d]).
- * A prefix-sum range weight satisfies both. Under these, the best split
- * opt[i][j] is monotone: opt[i][j-1] <= opt[i][j] <= opt[i+1][j]. So instead of
- * scanning all j-i split points, k only sweeps that shrinking window; summed over
- * every (i, j) the windows telescope to O(n^2) total work. Without QI the bound
- * may fail and the answer would be wrong, so only apply it when QI is proven.
+ * Non-negative prefix-sum range weights satisfy both. Under these, the best
+ * split indices are monotone, shrinking the search windows to O(n^2) total.
+ * Contract: weights are non-negative and all prefix sums and candidate costs
+ * fit in long long. An empty sequence costs 0.
  */
-long long knuth_merge_cost(vector<long long>& weight) {
+long long knuth_merge_cost(const vector<long long>& weight) {
     int n = weight.size();
+    if (n == 0) {
+        return 0;
+    }
     vector<long long> pre(n + 1, 0);
-    for (int i = 0; i < n; i++) pre[i + 1] = pre[i] + weight[i];
+    for (int i = 0; i < n; i++) {
+        pre[i + 1] = pre[i] + weight[i];
+    }
 
     vector<vector<long long>> dp(n, vector<long long>(n, 0));
     vector<vector<int>> opt(n, vector<int>(n, 0));
-    for (int i = 0; i < n; i++) opt[i][i] = i;
+    for (int i = 0; i < n; i++) {
+        opt[i][i] = i;
+    }
 
-    for (int i = n - 1; i >= 0; i--)
+    for (int i = n - 1; i >= 0; i--) {
         for (int j = i + 1; j < n; j++) {
             dp[i][j] = LINF;
             int lo = opt[i][j - 1];
@@ -35,13 +41,11 @@ long long knuth_merge_cost(vector<long long>& weight) {
                 }
             }
         }
+    }
     return dp[0][n - 1];
 }
 
-/**
- * Example: cheapest way to merge weights {10,20,30,40}; every merge of two
- * adjacent piles costs their combined weight. Optimal total is 190.
- */
+/** Example: optimally merge four adjacent piles with total cost 190. */
 int main() {
     vector<long long> weight = {10, 20, 30, 40};
     cout << knuth_merge_cost(weight) << "\n";  // -> 190

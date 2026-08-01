@@ -2,8 +2,9 @@
  * Lyndon decomposition via Duval's algorithm: split s into a non-increasing
  * sequence of Lyndon words (a Lyndon word is strictly smaller than all its
  * proper suffixes). The factorization is unique. duval runs in O(n); the same
- * Duval scan over s+s yields min_rotation, the start index of the
- * lexicographically smallest rotation, also in O(n).
+ * Duval scan over s+s yields min_rotation, the start index of a
+ * lexicographically smallest rotation, also in O(n). For an empty string,
+ * duval returns no factors and min_rotation returns 0.
  */
 vector<string> duval(const string& s) {
     int len = s.size();
@@ -27,10 +28,6 @@ vector<string> duval(const string& s) {
     return factors;
 }
 
-/**
- * Smallest rotation: Duval scan over s+s, remembering the start of each factor;
- * the last factor beginning before position n starts the minimal rotation.
- */
 int min_rotation(const string& s) {
     int len = s.size();
     string doubled = s + s;
@@ -46,18 +43,20 @@ int min_rotation(const string& s) {
             lookahead++;
         }
         int period = lookahead - candidate;
-        while (start <= candidate) start += period;
+        while (start <= candidate) {
+            start += period;
+        }
     }
     return best;
 }
 
-/**
- * Example: Duval factors of "bananas", then the minimal rotation of "bbaaccaab".
- */
+/** Example: factor bananas and rotate bbaaccaab to its minimum form. */
 int main() {
     string factored;
     for (const string& factor: duval("bananas")) {
-        if (not factored.empty()) factored += '|';
+        if (not factored.empty()) {
+            factored += '|';
+        }
         factored += factor;
     }
     cout << factored << '\n';  // -> b|ananas

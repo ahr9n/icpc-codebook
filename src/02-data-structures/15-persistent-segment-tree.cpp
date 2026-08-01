@@ -11,7 +11,7 @@
  */
 struct PersistentSegTree {
     vector<int> left_child, right_child, subtree_count;
-    vector<int> roots;  // roots[i]: version holding the first i array elements
+    vector<int> roots;
     vector<long long> sorted_values;
 
     int new_node(int lc, int rc, int cnt) {
@@ -22,13 +22,16 @@ struct PersistentSegTree {
     }
 
     int insert(int prev, int lo, int hi, int pos) {
-        if (lo == hi) return new_node(0, 0, subtree_count[prev] + 1);
+        if (lo == hi) {
+            return new_node(0, 0, subtree_count[prev] + 1);
+        }
         int mid = (lo + hi) / 2;
         int lc = left_child[prev], rc = right_child[prev];
-        if (pos <= mid)
+        if (pos <= mid) {
             lc = insert(lc, lo, mid, pos);
-        else
+        } else {
             rc = insert(rc, mid + 1, hi, pos);
+        }
         return new_node(lc, rc, subtree_count[lc] + subtree_count[rc]);
     }
 
@@ -73,16 +76,14 @@ struct PersistentSegTree {
     }
 };
 
-/**
- * Example: array with distinct and repeated values; three k-th-in-range queries.
- */
+/** Example: three k-th-smallest queries on different array ranges. */
 int main() {
     vector<long long> a = {5, 2, 6, 2, 9, 3, 7};
     PersistentSegTree pst(a);
 
-    cout << pst.query(2, 5, 3) << '\n';  // {2,6,2,9} sorted -> 3rd is 6
-    cout << pst.query(1, 7, 1) << '\n';  // whole array, smallest is 2
-    cout << pst.query(3, 6, 2) << '\n';  // {6,2,9,3} sorted -> 2nd is 3
+    cout << pst.query(2, 5, 3) << '\n';
+    cout << pst.query(1, 7, 1) << '\n';
+    cout << pst.query(3, 6, 2) << '\n';
 
     return 0;
 }

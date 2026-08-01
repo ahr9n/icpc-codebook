@@ -33,9 +33,13 @@ struct BlockCutTree {
         int children = 0;
 
         for (auto [v, id]: g[u]) {
-            if (id == parent_edge) continue;
+            if (id == parent_edge) {
+                continue;
+            }
             if (num[v] != -1) {
-                if (num[v] < num[u]) edge_stack.push_back(id);
+                if (num[v] < num[u]) {
+                    edge_stack.push_back(id);
+                }
                 low[u] = min(low[u], num[v]);
                 continue;
             }
@@ -45,54 +49,63 @@ struct BlockCutTree {
             low[u] = min(low[u], low[v]);
 
             if (low[v] >= num[u]) {
-                if (parent_edge != -1) is_cut[u] = true;
+                if (parent_edge != -1) {
+                    is_cut[u] = true;
+                }
                 vector<int> block;
                 while (true) {
                     int e = edge_stack.back();
                     edge_stack.pop_back();
                     block.push_back(e);
-                    if (e == id) break;
+                    if (e == id) {
+                        break;
+                    }
                 }
                 bccs.push_back(block);
             }
         }
 
-        if (parent_edge == -1 and children > 1) is_cut[u] = true;
+        if (parent_edge == -1 and children > 1) {
+            is_cut[u] = true;
+        }
     }
 
     void build_tree() {
         block_count = bccs.size();
         cut_id.assign(n, -1);
         int node = block_count;
-        for (int u = 0; u < n; u++)
-            if (is_cut[u]) cut_id[u] = node++;
+        for (int u = 0; u < n; u++) {
+            if (is_cut[u]) {
+                cut_id[u] = node++;
+            }
+        }
 
         tree.assign(node, {});
+        vector<int> last_block(n, -1);
         for (int b = 0; b < block_count; b++) {
-            set<int> verts;
             for (int e: bccs[b]) {
-                verts.insert(edges[e].first);
-                verts.insert(edges[e].second);
-            }
-            for (int u: verts)
-                if (is_cut[u]) {
-                    tree[b].push_back(cut_id[u]);
-                    tree[cut_id[u]].push_back(b);
+                for (int u: {edges[e].first, edges[e].second}) {
+                    if (is_cut[u] and last_block[u] != b) {
+                        last_block[u] = b;
+                        tree[b].push_back(cut_id[u]);
+                        tree[cut_id[u]].push_back(b);
+                    }
                 }
+            }
         }
     }
 
     void run() {
-        for (int u = 0; u < n; u++)
-            if (num[u] == -1) dfs(u, -1);
+        for (int u = 0; u < n; u++) {
+            if (num[u] == -1) {
+                dfs(u, -1);
+            }
+        }
         build_tree();
     }
 };
 
-/**
- * Two triangles {0,1,2} and {2,3,4} sharing the cut vertex 2: two blocks, and a
- * block-cut tree of three nodes (block, block, cut vertex) with two edges.
- */
+/** Example: two triangles sharing one cut vertex produce two blocks. */
 int main() {
     BlockCutTree bct(5);
     bct.add_edge(0, 1);
@@ -104,9 +117,12 @@ int main() {
     bct.run();
 
     int tree_edges = 0;
-    for (auto& adj: bct.tree) tree_edges += adj.size();
+    for (auto& adj: bct.tree) {
+        tree_edges += adj.size();
+    }
     tree_edges /= 2;
 
-    cout << bct.bccs.size() << " " << tree_edges << "\n";  // -> 2 2
+    cout << bct.bccs.size() << " " << tree_edges << "\n";
     return 0;
 }
+// -> 2 2

@@ -1,7 +1,8 @@
 /**
  * Tonelli-Shanks: a modular square root. Solves x^2 == a (mod p) for an odd
  * prime p, returning one root r (the other is p - r) or -1 when a is a quadratic
- * non-residue. O(log^2 p).
+ * non-residue. O(log^2 p + z*log p), where z is the smallest tested quadratic
+ * non-residue; z is typically tiny.
  *
  * Contract: p must be an odd prime and 0 <= a < p. a == 0 returns 0. The p == 3
  * mod 4 case has a closed form a^((p+1)/4); the general loop is only entered when
@@ -16,7 +17,9 @@ long long pow_mod(long long base, long long exp, long long mod) {
     long long res = 1 % mod;
     base %= mod;
     while (exp) {
-        if (exp & 1) res = mul_mod(res, base, mod);
+        if (exp & 1) {
+            res = mul_mod(res, base, mod);
+        }
         base = mul_mod(base, base, mod);
         exp >>= 1;
     }
@@ -25,17 +28,27 @@ long long pow_mod(long long base, long long exp, long long mod) {
 
 long long sqrt_mod(long long a, long long p) {
     a %= p;
-    if (a == 0) return 0;
-    // Euler's criterion: a is a residue iff a^((p-1)/2) == 1.
-    if (pow_mod(a, (p - 1) / 2, p) != 1) return -1;
-    if (p % 4 == 3) return pow_mod(a, (p + 1) / 4, p);
+    if (a == 0) {
+        return 0;
+    }
+    if (pow_mod(a, (p - 1) / 2, p) != 1) {
+        return -1;
+    }
+    if (p % 4 == 3) {
+        return pow_mod(a, (p + 1) / 4, p);
+    }
 
     long long q = p - 1;
     int s = 0;
-    while ((q & 1) == 0) q >>= 1, s++;
+    while ((q & 1) == 0) {
+        q >>= 1;
+        s++;
+    }
 
     long long z = 2;
-    while (pow_mod(z, (p - 1) / 2, p) != p - 1) z++;
+    while (pow_mod(z, (p - 1) / 2, p) != p - 1) {
+        z++;
+    }
 
     int m = s;
     long long c = pow_mod(z, q, p);
@@ -44,7 +57,10 @@ long long sqrt_mod(long long a, long long p) {
     while (t != 1) {
         int i = 0;
         long long cur = t;
-        while (cur != 1) cur = mul_mod(cur, cur, p), i++;
+        while (cur != 1) {
+            cur = mul_mod(cur, cur, p);
+            i++;
+        }
         long long b = pow_mod(c, 1LL << (m - i - 1), p);
         m = i;
         c = mul_mod(b, b, p);
@@ -54,9 +70,7 @@ long long sqrt_mod(long long a, long long p) {
     return r;
 }
 
-/**
- * Example: a root of 2 modulo 113 (a prime that is 1 mod 4).
- */
+/** Example: 62 is a square root of 2 modulo 113. */
 int main() {
     long long p = 113, a = 2;
     long long r = sqrt_mod(a, p);

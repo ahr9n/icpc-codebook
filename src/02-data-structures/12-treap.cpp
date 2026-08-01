@@ -2,8 +2,8 @@
  * Balanced BST via treap (tree + heap) with split/merge, augmented with subtree
  * sizes for order statistics. Randomized priorities keep it balanced in
  * expectation, so every operation is O(log n) expected. Supports duplicates as a
- * multiset. Split cuts on keys < key vs keys >= key, so each node's left subtree
- * is strictly smaller and its right subtree holds the equal keys.
+ * multiset. Split cuts on keys < key vs keys >= key; after merging in a duplicate,
+ * equal keys can be on either side while the in-order sequence stays sorted.
  *
  * kth(k) is 0-indexed and returns LINF when k is out of range.
  * order_of_key(x) counts elements strictly less than x.
@@ -24,7 +24,9 @@ struct Treap {
     Node* root = nullptr;
 
     int size_of(Node* node) {
-        if (node == nullptr) return 0;
+        if (node == nullptr) {
+            return 0;
+        }
         return node->subtree_size;
     }
 
@@ -49,8 +51,12 @@ struct Treap {
     }
 
     Node* merge(Node* left, Node* right) {
-        if (left == nullptr) return right;
-        if (right == nullptr) return left;
+        if (left == nullptr) {
+            return right;
+        }
+        if (right == nullptr) {
+            return left;
+        }
         if (left->priority > right->priority) {
             left->right = merge(left->right, right);
             pull(left);
@@ -68,17 +74,20 @@ struct Treap {
     }
 
     Node* erase_one(Node* node, long long key, bool& removed) {
-        if (node == nullptr) return nullptr;
+        if (node == nullptr) {
+            return nullptr;
+        }
         if (node->key == key) {
             removed = true;
             Node* merged = merge(node->left, node->right);
             delete node;
             return merged;
         }
-        if (key < node->key)
+        if (key < node->key) {
             node->left = erase_one(node->left, key, removed);
-        else
+        } else {
             node->right = erase_one(node->right, key, removed);
+        }
         pull(node);
         return node;
     }
@@ -124,21 +133,25 @@ struct Treap {
     }
 };
 
-/**
- * Example: a multiset with a duplicate key, then an order-statistics query and a
- * rank query, before and after erasing one occurrence.
- */
+/** Example: multiset rank and k-th queries before and after one erase. */
 int main() {
     Treap treap;
-    for (long long key: {5, 3, 8, 1, 9, 3}) treap.insert(key);
+    for (long long key: {5, 3, 8, 1, 9, 3}) {
+        treap.insert(key);
+    }
 
-    cout << treap.size() << "\n";           // -> 6
-    cout << treap.kth(3) << "\n";           // -> 5
-    cout << treap.order_of_key(8) << "\n";  // -> 4
+    cout << treap.size() << "\n";
+    cout << treap.kth(3) << "\n";
+    cout << treap.order_of_key(8) << "\n";
 
     treap.erase(3);
-    cout << treap.size() << "\n";           // -> 5
-    cout << treap.order_of_key(8) << "\n";  // -> 3
+    cout << treap.size() << "\n";
+    cout << treap.order_of_key(8) << "\n";
 
     return 0;
 }
+// -> 6
+// -> 5
+// -> 4
+// -> 5
+// -> 3

@@ -10,13 +10,18 @@ vector<int> stable_marriage(const vector<vector<int>>& men_pref,
                             const vector<vector<int>>& women_pref) {
     int n = men_pref.size();
     vector<vector<int>> woman_rank(n, vector<int>(n));
-    for (int w = 0; w < n; w++)
-        for (int rank = 0; rank < n; rank++) woman_rank[w][women_pref[w][rank]] = rank;
+    for (int w = 0; w < n; w++) {
+        for (int rank = 0; rank < n; rank++) {
+            woman_rank[w][women_pref[w][rank]] = rank;
+        }
+    }
 
     vector<int> next_proposal(n, 0);
     vector<int> husband_of(n, -1);
     vector<int> free_men(n);
-    for (int m = 0; m < n; m++) free_men[m] = m;
+    for (int m = 0; m < n; m++) {
+        free_men[m] = m;
+    }
 
     while (not free_men.empty()) {
         int m = free_men.back();
@@ -36,17 +41,16 @@ vector<int> stable_marriage(const vector<vector<int>>& men_pref,
     return husband_of;
 }
 
-/**
- * Example: n = 3. Print each woman and the man she ends up matched with.
- */
+/** Example: a non-identity stable matching of three couples. */
 int main() {
-    vector<vector<int>> men_pref = {{0, 1, 2}, {1, 0, 2}, {0, 1, 2}};
+    vector<vector<int>> men_pref = {{1, 0, 2}, {0, 1, 2}, {0, 1, 2}};
     vector<vector<int>> women_pref = {{1, 0, 2}, {0, 1, 2}, {0, 1, 2}};
     vector<int> husband_of = stable_marriage(men_pref, women_pref);
-    for (int w = 0; w < (int)husband_of.size(); w++)
+    for (int w = 0; w < (int)husband_of.size(); w++) {
         cout << "woman " << w << " -> man " << husband_of[w] << "\n";
-    // -> woman 0 -> man 1
-    // -> woman 1 -> man 0
-    // -> woman 2 -> man 2
+    }
     return 0;
 }
+// -> woman 0 -> man 1
+// -> woman 1 -> man 0
+// -> woman 2 -> man 2

@@ -1,6 +1,6 @@
 /**
- * Segment Tree Beats: range chmin (a[i] = min(a[i], x) on [l, r]) with range-sum
- * and range-max queries, in amortized O(n log^2 n) over any sequence of updates.
+ * Segment Tree Beats: range chmin (a[i] = min(a[i], x) on [l, r]) in amortized
+ * O(log^2 n), with range-sum and range-max queries in O(log n).
  *
  * Each node tracks its maximum, its strict second maximum, how many entries equal
  * that maximum, and the range sum. A chmin(x) only touches entries that exceed x,
@@ -12,9 +12,10 @@
  * such deep recursion permanently collapses two distinct level-maxima into one,
  * and the total number of distinct values that can ever be destroyed across the
  * whole tree is O(n log n); paying one extra log for the tree height gives the
- * O(n log^2 n) total. The pushed-down tag is just a max-ceiling: applying it to a
+ * amortized bound. The pushed-down tag is just a max-ceiling: applying it to a
  * child always meets the O(1) case, since a parent's max is >= each child's
- * second_max by construction.
+ * second_max by construction. Construction is O(n); ranges are inclusive and
+ * the input array must be non-empty.
  *
  * chmax (a[i] = max(a[i], x)) and range-add extend the same idea but need the
  * symmetric (min, second_min, count_min) trio and add-lazy, so more state per node.
@@ -66,7 +67,9 @@ struct SegTreeBeats {
     }
 
     void apply_chmin(int i, long long x) {
-        if (x >= max_val[i]) return;
+        if (x >= max_val[i]) {
+            return;
+        }
         sum[i] -= (max_val[i] - x) * count_max[i];
         max_val[i] = x;
     }
@@ -77,7 +80,9 @@ struct SegTreeBeats {
     }
 
     void update(int i, int lo, int hi, int l, int r, long long x) {
-        if (r < lo or hi < l or max_val[i] <= x) return;
+        if (r < lo or hi < l or max_val[i] <= x) {
+            return;
+        }
         if (l <= lo and hi <= r and second_max[i] < x) {
             apply_chmin(i, x);
             return;
@@ -90,16 +95,24 @@ struct SegTreeBeats {
     }
 
     long long query_sum(int i, int lo, int hi, int l, int r) {
-        if (r < lo or hi < l) return 0;
-        if (l <= lo and hi <= r) return sum[i];
+        if (r < lo or hi < l) {
+            return 0;
+        }
+        if (l <= lo and hi <= r) {
+            return sum[i];
+        }
         int mid = (lo + hi) / 2;
         push(i);
         return query_sum(2 * i, lo, mid, l, r) + query_sum(2 * i + 1, mid + 1, hi, l, r);
     }
 
     long long query_max(int i, int lo, int hi, int l, int r) {
-        if (r < lo or hi < l) return -BEATS_INF;
-        if (l <= lo and hi <= r) return max_val[i];
+        if (r < lo or hi < l) {
+            return -BEATS_INF;
+        }
+        if (l <= lo and hi <= r) {
+            return max_val[i];
+        }
         int mid = (lo + hi) / 2;
         push(i);
         return max(query_max(2 * i, lo, mid, l, r), query_max(2 * i + 1, mid + 1, hi, l, r));
@@ -118,25 +131,30 @@ struct SegTreeBeats {
     }
 };
 
-/**
- * Example: chmin updates interleaved with sum and max queries.
- */
+/** Example: range chmin updates interleaved with sum and maximum queries. */
 int main() {
     vector<long long> values = {5, 4, 7, 2, 9, 1};
     SegTreeBeats st(values);
 
-    cout << st.range_sum(0, 5) << "\n";  // -> 28
-    cout << st.range_max(0, 5) << "\n";  // -> 9
+    cout << st.range_sum(0, 5) << "\n";
+    cout << st.range_max(0, 5) << "\n";
 
-    st.chmin(1, 4, 5);                   // clamp indices 1..4 at 5: {5, 4, 5, 2, 5, 1}
-    cout << st.range_sum(0, 5) << "\n";  // -> 22
-    cout << st.range_max(0, 4) << "\n";  // -> 5
+    st.chmin(1, 4, 5);
+    cout << st.range_sum(0, 5) << "\n";
+    cout << st.range_max(0, 4) << "\n";
 
-    st.chmin(0, 5, 3);                   // clamp everything at 3: {3, 3, 3, 2, 3, 1}
-    cout << st.range_sum(0, 5) << "\n";  // -> 15
-    cout << st.range_max(2, 5) << "\n";  // -> 3
+    st.chmin(0, 5, 3);
+    cout << st.range_sum(0, 5) << "\n";
+    cout << st.range_max(2, 5) << "\n";
 
-    st.chmin(0, 5, 100);                 // no-op: all values already below 100
-    cout << st.range_sum(0, 5) << "\n";  // -> 15
+    st.chmin(0, 5, 100);
+    cout << st.range_sum(0, 5) << "\n";
     return 0;
 }
+// -> 28
+// -> 9
+// -> 22
+// -> 5
+// -> 15
+// -> 3
+// -> 15

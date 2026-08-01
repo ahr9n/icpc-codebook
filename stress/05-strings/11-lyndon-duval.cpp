@@ -3,8 +3,7 @@
 static bool is_lyndon(const string& w) {
     int len = w.size();
     for (int suffix = 1; suffix < len; suffix++)
-        if (w.substr(suffix) <= w)
-            return false;
+        if (w.substr(suffix) <= w) return false;
     return true;
 }
 
@@ -12,16 +11,19 @@ int stress() {
     mt19937 rng(11);
     const string alphabet = "ab";
     long long checks = 0;
+    if (not duval("").empty() or min_rotation("") != 0) {
+        printf("FAIL empty\n");
+        return 1;
+    }
+    checks++;
     for (int rep = 0; rep < 20000; rep++) {
         int len = rng() % 9 + 1;
         string s;
-        for (int i = 0; i < len; i++)
-            s += alphabet[rng() % alphabet.size()];
+        for (int i = 0; i < len; i++) s += alphabet[rng() % alphabet.size()];
 
         vector<string> factors = duval(s);
         string rebuilt;
-        for (const string& factor: factors)
-            rebuilt += factor;
+        for (const string& factor: factors) rebuilt += factor;
         if (rebuilt != s) {
             printf("FAIL concat s=%s\n", s.c_str());
             return 1;

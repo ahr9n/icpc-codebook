@@ -1,82 +1,80 @@
 /**
  * Longest common subsequence in linear memory.
  *
- * Two pieces:
- *   lcs_length  -- LCS *length only*, keeping just two DP rows: O(n*m) time,
- *                  O(min(n,m)) memory.
- *   hirschberg  -- the actual LCS *string* by divide-and-conquer: still
- *                  O(n*m) time but O(n+m) memory, versus O(n*m) for a full
- *                  DP table you would backtrack through.
- *
- * Why Hirschberg saves memory: the classic reconstruction stores the whole
- * n*m table so it can walk back from the corner. Here we never keep a table.
- * We split the first string at its middle row, use two linear-space score
- * passes (forward over prefixes, backward over suffixes) to learn *where* an
- * optimal LCS crosses that row in the second string, then recurse on the two
- * halves. Each level allocates only O(m) rows; the split point is all we carry
- * across the recursion, so peak memory stays O(n+m).
+ * lcs_length returns only the length in O(n*m) time and O(min(n,m)) memory.
+ * hirschberg reconstructs one LCS in O(n*m) time and O(n+m) peak memory. It
+ * finds where an optimal solution crosses the middle row using forward and
+ * backward linear-space DP passes, so reconstruction needs no full DP table.
  */
-
-// Last row of the LCS DP of a against b: row[j] = LCS(a, b[0..j)). O(|b|) memory.
-vector<long long> lcs_row(const string& a, const string& b) {
-    int m = b.size();
+vector<long long> lcs_row(const string& a, int a_left, int a_right, const string& b, int b_left,
+                          int b_right, bool reversed) {
+    int n = a_right - a_left, m = b_right - b_left;
     vector<long long> prev(m + 1, 0), cur(m + 1, 0);
-    for (int i = 1; i <= (int)a.size(); i++) {
-        for (int j = 1; j <= m; j++)
-            if (a[i - 1] == b[j - 1])
+    for (int i = 1; i <= n; i++) {
+        char from_a = reversed ? a[a_right - i] : a[a_left + i - 1];
+        for (int j = 1; j <= m; j++) {
+            char from_b = reversed ? b[b_right - j] : b[b_left + j - 1];
+            if (from_a == from_b) {
                 cur[j] = prev[j - 1] + 1;
-            else
+            } else {
                 cur[j] = max(prev[j], cur[j - 1]);
+            }
+        }
         swap(prev, cur);
     }
     return prev;
 }
 
-// Warmup: LCS length in O(min(n,m)) memory by rolling the row along the shorter string.
 long long lcs_length(const string& a, const string& b) {
-    if (a.size() < b.size()) return lcs_length(b, a);
-    return lcs_row(a, b).back();
+    if (a.size() < b.size()) {
+        return lcs_length(b, a);
+    }
+    return lcs_row(a, 0, a.size(), b, 0, b.size(), false).back();
 }
 
-string hirschberg(const string& a, const string& b) {
-    int n = a.size(), m = b.size();
-    if (n == 0) return "";
-    if (n == 1) {
-        // One character contributes to the LCS iff it appears somewhere in b.
-        for (char c: b)
-            if (c == a[0]) return string(1, a[0]);
-        return "";
+void build_lcs(const string& a, int a_left, int a_right, const string& b, int b_left, int b_right,
+               string& result) {
+    if (a_left == a_right or b_left == b_right) {
+        return;
+    }
+    if (a_right - a_left == 1) {
+        for (int i = b_left; i < b_right; i++) {
+            if (b[i] == a[a_left]) {
+                result.push_back(a[a_left]);
+                return;
+            }
+        }
+        return;
     }
 
-    int mid = n / 2;
-    string a_left = a.substr(0, mid);
-    string a_right = a.substr(mid);
-
-    // score_l[k]      = LCS(a_left,  b[0..k)).
-    // score_r_rev[j]  = LCS(a_right, b[m-j..m)) -- suffix scores via reversed strings,
-    //                   so the backward pass reuses the same forward row routine.
-    vector<long long> score_l = lcs_row(a_left, b);
-    string a_right_rev(a_right.rbegin(), a_right.rend());
-    string b_rev(b.rbegin(), b.rend());
-    vector<long long> score_r_rev = lcs_row(a_right_rev, b_rev);
-
-    // Split b at the k that lets the two halves of a claim the most together.
-    int best_k = 0;
-    long long best = -1;
-    for (int k = 0; k <= m; k++) {
-        long long total = score_l[k] + score_r_rev[m - k];
-        if (total > best) {
-            best = total;
-            best_k = k;
+    int a_mid = (a_left + a_right) / 2;
+    int b_size = b_right - b_left;
+    int b_mid = b_left;
+    {
+        vector<long long> forward = lcs_row(a, a_left, a_mid, b, b_left, b_right, false);
+        vector<long long> backward = lcs_row(a, a_mid, a_right, b, b_left, b_right, true);
+        long long best = -1;
+        for (int prefix = 0; prefix <= b_size; prefix++) {
+            long long length = forward[prefix] + backward[b_size - prefix];
+            if (length > best) {
+                best = length;
+                b_mid = b_left + prefix;
+            }
         }
     }
 
-    return hirschberg(a_left, b.substr(0, best_k)) + hirschberg(a_right, b.substr(best_k));
+    build_lcs(a, a_left, a_mid, b, b_left, b_mid, result);
+    build_lcs(a, a_mid, a_right, b, b_mid, b_right, result);
 }
 
-/**
- * Example: LCS of "AGGTAB" and "GXTXAYB" is "GTAB", length 4.
- */
+string hirschberg(const string& a, const string& b) {
+    string result;
+    result.reserve(min(a.size(), b.size()));
+    build_lcs(a, 0, a.size(), b, 0, b.size(), result);
+    return result;
+}
+
+/** Example: one LCS of AGGTAB and GXTXAYB is GTAB. */
 int main() {
     string a = "AGGTAB", b = "GXTXAYB";
     cout << lcs_length(a, b) << "\n";  // -> 4

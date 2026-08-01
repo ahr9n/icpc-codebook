@@ -21,3 +21,7 @@ stress/run.sh sqrt-tree  # only harnesses whose path contains "sqrt-tree"
 ```
 
 Exits nonzero if any harness fails to compile or reports a mismatch.
+
+The GNU-only policy-based order-statistics tree is compiled with Homebrew
+`g++-15` when available and reported as skipped on toolchains without GNU
+`pb_ds`; every other listing uses `clang++` through the repository shim.

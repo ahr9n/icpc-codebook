@@ -56,6 +56,16 @@ int stress() {
     if (one != vector<int>{-7} or counting_sort({3}, 3) != vector<int>{3}) return 1;
     checks += 4;
 
+    vector<int> extremes = {INT_MAX, 0, INT_MIN, -1, 1, INT_MAX, INT_MIN};
+    vector<int> ref_extremes = extremes;
+    sort(ref_extremes.begin(), ref_extremes.end());
+    radix_sort(extremes);
+    if (extremes != ref_extremes) {
+        printf("FAIL radix extremes\n");
+        return 1;
+    }
+    checks++;
+
     printf("counting-radix-sort PASS %lld", checks);
     return 0;
 }

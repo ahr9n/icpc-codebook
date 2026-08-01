@@ -2,7 +2,8 @@
  * Kadane in 2D: max sum over every axis-aligned submatrix. Fix a top/bottom row
  * pair, collapse the strip between them into per-column sums, then run 1D Kadane
  * (see 01-kadane) on that array. O(R^2 * C). All-negative input yields the
- * least-negative single cell (never 0), matching the 1D convention.
+ * least-negative single cell (never 0), matching the 1D convention. Contract:
+ * grid is non-empty and rectangular, and every rectangle sum fits long long.
  */
 long long max_submatrix(const vector<vector<long long>>& grid) {
     int rows = grid.size(), cols = grid[0].size();
@@ -21,6 +22,7 @@ long long max_submatrix(const vector<vector<long long>>& grid) {
     return best;
 }
 
+/** Example: the maximum submatrix of a mixed-sign 4x5 grid sums to 29. */
 int main() {
     vector<vector<long long>> grid = {
         {1, 2, -1, -4, -20},

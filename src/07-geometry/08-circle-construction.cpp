@@ -13,14 +13,14 @@ double dist(Point a, Point b) {
 }
 
 /**
- * Circumcircle of three points: the unique circle passing through a, b, c,
- * found as the intersection of two perpendicular bisectors (solved in closed
- * form by a determinant). Returns false and leaves out untouched when the
- * points are collinear -- no finite circle exists. O(1).
+ * Circumcircle through three points. Returns false and leaves out untouched for
+ * collinear points. O(1).
  */
 bool circumcircle(Point a, Point b, Point c, Circle& out) {
     double d = 2 * (a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y));
-    if (fabs(d) < EPS) return false;
+    if (fabs(d) < EPS) {
+        return false;
+    }
     double a2 = a.x * a.x + a.y * a.y;
     double b2 = b.x * b.x + b.y * b.y;
     double c2 = c.x * c.x + c.y * c.y;
@@ -42,18 +42,27 @@ Circle circle_from_2(Point a, Point b) {
 
 Circle circle_from_3(Point a, Point b, Point c) {
     Circle out{};
-    circumcircle(a, b, c, out);
-    return out;
+    if (circumcircle(a, b, c, out)) {
+        return out;
+    }
+
+    const double invalid_radius = -1;
+    Circle best = {{0, 0}, invalid_radius};
+    vector<Circle> candidates = {circle_from_2(a, b), circle_from_2(a, c), circle_from_2(b, c)};
+    for (auto candidate: candidates) {
+        if (in_circle(candidate, a) and in_circle(candidate, b) and in_circle(candidate, c) and
+            (best.r == invalid_radius or candidate.r < best.r)) {
+            best = candidate;
+        }
+    }
+    return best;
 }
 
 /**
- * Minimum enclosing circle (smallest circle covering every point) via Welzl's
- * randomized incremental algorithm. Grow the answer point by point: whenever a
- * point falls outside the current circle it must lie on the boundary of the new
- * one, which pins down one, then two, then three boundary points -- the circle
- * is fixed by two points as a diameter or by three via the circumcircle. The
- * random shuffle makes the triple-nested rebuilds rare, giving expected O(n)
- * (worst case O(n^2)). Contract: pts non-empty; a single point yields r = 0.
+ * Randomized incremental minimum enclosing circle. A violating point becomes a
+ * boundary point; two boundary points define a diameter, while three define a
+ * circumcircle or the farthest-pair diameter when collinear. Expected O(n),
+ * worst-case O(n^3). pts must be non-empty.
  */
 Circle min_enclosing_circle(vector<Point> pts) {
     const unsigned int shuffle_seed = 20240218u;  // fixed so the demo is reproducible
@@ -63,13 +72,19 @@ Circle min_enclosing_circle(vector<Point> pts) {
     int n = pts.size();
     Circle c = {pts[0], 0};
     for (int i = 1; i < n; i++) {
-        if (in_circle(c, pts[i])) continue;
+        if (in_circle(c, pts[i])) {
+            continue;
+        }
         c = {pts[i], 0};
         for (int j = 0; j < i; j++) {
-            if (in_circle(c, pts[j])) continue;
+            if (in_circle(c, pts[j])) {
+                continue;
+            }
             c = circle_from_2(pts[i], pts[j]);
             for (int k = 0; k < j; k++) {
-                if (in_circle(c, pts[k])) continue;
+                if (in_circle(c, pts[k])) {
+                    continue;
+                }
                 c = circle_from_3(pts[i], pts[j], pts[k]);
             }
         }

@@ -4,6 +4,12 @@ int stress() {
     mt19937 rng(22);
     long long checks = 0;
 
+    if (knuth_merge_cost({}) != 0) {
+        printf("FAIL empty\n");
+        return 1;
+    }
+    checks++;
+
     for (int trial = 0; trial < 4000; trial++) {
         int n = 1 + rng() % 14;
         vector<long long> weight(n);

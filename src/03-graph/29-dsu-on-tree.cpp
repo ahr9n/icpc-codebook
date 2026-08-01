@@ -20,7 +20,9 @@ int distinct_colors = 0, heavy_skip = -1;
 void calc_size(int u, int parent) {
     sub[u] = 1;
     for (int v: adj[u]) {
-        if (v == parent) continue;
+        if (v == parent) {
+            continue;
+        }
         calc_size(v, u);
         sub[u] += sub[v];
     }
@@ -29,35 +31,52 @@ void calc_size(int u, int parent) {
 void update(int u, int parent, int delta) {
     int c = color[u];
     if (delta > 0) {
-        if (freq[c] == 0) distinct_colors++;
+        if (freq[c] == 0) {
+            distinct_colors++;
+        }
         freq[c]++;
     } else {
         freq[c]--;
-        if (freq[c] == 0) distinct_colors--;
+        if (freq[c] == 0) {
+            distinct_colors--;
+        }
     }
-    for (int v: adj[u])
-        if (v != parent and v != heavy_skip) update(v, u, delta);
+    for (int v: adj[u]) {
+        if (v != parent and v != heavy_skip) {
+            update(v, u, delta);
+        }
+    }
 }
 
 void dfs(int u, int parent, bool keep) {
     int heavy = -1;
     for (int v: adj[u]) {
-        if (v == parent) continue;
-        if (heavy == -1 or sub[v] > sub[heavy]) heavy = v;
+        if (v == parent) {
+            continue;
+        }
+        if (heavy == -1 or sub[v] > sub[heavy]) {
+            heavy = v;
+        }
     }
 
     for (int v: adj[u]) {
-        if (v == parent or v == heavy) continue;
+        if (v == parent or v == heavy) {
+            continue;
+        }
         dfs(v, u, false);
     }
-    if (heavy != -1) dfs(heavy, u, true);
+    if (heavy != -1) {
+        dfs(heavy, u, true);
+    }
 
     heavy_skip = heavy;
     update(u, parent, +1);
     heavy_skip = -1;
     answer[u] = distinct_colors;
 
-    if (not keep) update(u, parent, -1);
+    if (not keep) {
+        update(u, parent, -1);
+    }
 }
 
 void solve(int root, int n) {
@@ -69,10 +88,7 @@ void solve(int root, int n) {
     dfs(root, -1, true);
 }
 
-/**
- * Example: tree 0-{1,2}, 1-{3,4}, 2-{5,6} with colors [1,2,1,3,2,1,4].
- * Root subtree has colors {1,2,3,4}; node 1's subtree {2,3,2} has {2,3}.
- */
+/** Example: distinct-color counts for the root and one child subtree. */
 int main() {
     int n = 7;
     color = {1, 2, 1, 3, 2, 1, 4};
@@ -84,6 +100,7 @@ int main() {
     }
 
     solve(0, n);
-    cout << answer[0] << " " << answer[1] << "\n";  // -> 4 2
+    cout << answer[0] << " " << answer[1] << "\n";
     return 0;
 }
+// -> 4 2

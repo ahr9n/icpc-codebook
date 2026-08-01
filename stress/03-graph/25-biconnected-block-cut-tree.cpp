@@ -39,7 +39,7 @@ int stress() {
 
         int base = comp_count(-1);
         for (int u = 0; u < n; u++) {
-            bool brute_cut = comp_count(u) >= base;
+            bool brute_cut = comp_count(u) > base;
             if (brute_cut != (bool)bct.is_cut[u]) {
                 printf("block-cut FAIL(cut) rep=%d u=%d\n", rep, u);
                 return 1;

@@ -31,13 +31,15 @@ int stress() {
             }
         }
         if (tree.count_distinct() != (long long)distinct.size()) {
-            printf("FAIL distinct s=%s got=%lld want=%zu\n", s.c_str(),
-                   tree.count_distinct(), distinct.size());
+            printf("FAIL distinct s=%s got=%lld want=%zu\n", s.c_str(), tree.count_distinct(),
+                   distinct.size());
             return 1;
         }
         checks++;
         return 0;
     };
+
+    if (run_case("")) return 1;
 
     for (const string& edge: {string("a"), string(20, 'z'), string("abcdefghij")})
         if (run_case(edge)) return 1;

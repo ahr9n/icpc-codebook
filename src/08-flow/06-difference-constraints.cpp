@@ -1,20 +1,16 @@
 /**
  * Difference constraints: solve a system of x_v - x_u <= w for all constraints.
  *
- * A shortest-path pass keeps the invariant dist[v] <= dist[u] + w on every edge,
- * which is exactly x_v - x_u <= w once we read x_v := dist[v]. So model each
- * constraint x_v - x_u <= w as an edge u -> v of weight w, add a super-source with
- * a 0-weight edge to every variable (guaranteeing all are reachable), and run
- * Bellman-Ford from it. The resulting distances are one feasible assignment; a
- * negative cycle means the constraints sum to 0 < (a negative), a contradiction,
- * so the system is infeasible. The 0-weight super-source edges leave dist all 0
- * initially, so we relax the constraints directly without materializing it.
+ * Model x_v - x_u <= w as edge u -> v with weight w. Bellman-Ford distances from
+ * an implicit zero-edge super-source form a feasible assignment; a negative
+ * cycle is exactly a contradictory sum of inequalities.
  *
  * add_constraint(u, v, w) encodes x_v - x_u <= w. To encode others:
  *   x_v - x_u >= w   as   add_constraint(v, u, -w)
  *   x_v - x_u == w   as   both add_constraint(u, v, w) and add_constraint(v, u, -w)
  *   x_v - x_u <  w   as   add_constraint(u, v, w - 1)   (integer variables only)
- * The returned assignment is the tightest one with every x <= 0. O(V * E)
+ * The returned assignment is componentwise greatest among solutions with every
+ * x <= 0. Contract: relaxed path sums fit long long. O(V * E).
  */
 struct DifferenceConstraints {
     struct Constraint {
@@ -35,16 +31,22 @@ struct DifferenceConstraints {
 
         for (int round = 0; round < n; round++) {
             bool changed = false;
-            for (Constraint& c: constraints)
+            for (Constraint& c: constraints) {
                 if (assignment[c.u] + c.w < assignment[c.v]) {
                     assignment[c.v] = assignment[c.u] + c.w;
                     changed = true;
                 }
-            if (not changed) return {true, assignment};
+            }
+            if (not changed) {
+                return {true, assignment};
+            }
         }
 
-        for (Constraint& c: constraints)
-            if (assignment[c.u] + c.w < assignment[c.v]) return {false, {}};
+        for (Constraint& c: constraints) {
+            if (assignment[c.u] + c.w < assignment[c.v]) {
+                return {false, {}};
+            }
+        }
         return {true, assignment};
     }
 };
@@ -63,7 +65,9 @@ int main() {
 
     auto [feasible, x] = dc.solve();
     cout << feasible << "\n";
-    for (long long xi: x) cout << xi << " ";
+    for (long long xi: x) {
+        cout << xi << " ";
+    }
     cout << "\n";  // -> 1 \n 0 -2 -5 0
     return 0;
 }

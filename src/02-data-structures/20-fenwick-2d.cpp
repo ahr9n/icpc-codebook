@@ -12,14 +12,20 @@ struct BIT2D {
         : rows(rows), cols(cols), tree(rows + 1, vector<long long>(cols + 1, 0)) {}
 
     void add(int r, int c, long long val) {
-        for (int i = r + 1; i <= rows; i += i & -i)
-            for (int j = c + 1; j <= cols; j += j & -j) tree[i][j] += val;
+        for (int i = r + 1; i <= rows; i += i & -i) {
+            for (int j = c + 1; j <= cols; j += j & -j) {
+                tree[i][j] += val;
+            }
+        }
     }
 
     long long prefix(int r, int c) {
         long long sum = 0;
-        for (int i = r + 1; i > 0; i -= i & -i)
-            for (int j = c + 1; j > 0; j -= j & -j) sum += tree[i][j];
+        for (int i = r + 1; i > 0; i -= i & -i) {
+            for (int j = c + 1; j > 0; j -= j & -j) {
+                sum += tree[i][j];
+            }
+        }
         return sum;
     }
 
@@ -28,16 +34,16 @@ struct BIT2D {
     }
 };
 
-/**
- * Example: seed a 3x4 grid via point updates, then read two rectangle sums.
- */
+/** Example: point additions followed by two rectangle-sum queries. */
 int main() {
     BIT2D bit(3, 4);
     bit.add(0, 0, 5);
     bit.add(1, 2, 3);
     bit.add(2, 3, 7);
     bit.add(1, 1, 2);
-    cout << bit.query(0, 0, 1, 2) << "\n";  // -> 10
-    cout << bit.query(1, 1, 2, 3) << "\n";  // -> 12
+    cout << bit.query(0, 0, 1, 2) << "\n";
+    cout << bit.query(1, 1, 2, 3) << "\n";
     return 0;
 }
+// -> 10
+// -> 12

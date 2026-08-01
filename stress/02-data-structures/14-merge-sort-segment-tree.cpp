@@ -1,4 +1,4 @@
-// Stress: MergeSortTree count_leq / count_in vs naive scan over every [l, r].
+// Stress: MergeSortTree count_leq / count_in / kth vs naive scans and sorting.
 int stress() {
     mt19937 rng(99);
     long long checks = 0;
@@ -32,7 +32,51 @@ int stress() {
                         }
                         checks++;
                     }
+
+            for (int l = 0; l < n; l++) {
+                for (int r = l; r < n; r++) {
+                    vector<int> sorted(values.begin() + l, values.begin() + r + 1);
+                    sort(sorted.begin(), sorted.end());
+                    for (int k = 1; k <= (int)sorted.size(); k++) {
+                        if (mst.kth(l, r, k) != sorted[k - 1]) {
+                            printf("FAIL kth n=%d l=%d r=%d k=%d\n", n, l, r, k);
+                            return 1;
+                        }
+                        checks++;
+                    }
+                }
+            }
         }
+
+    vector<int> extremes = {INT_MIN, -1, 0, INT_MAX};
+    MergeSortTree mst(extremes);
+    vector<array<int, 4>> cases = {
+        {INT_MIN, INT_MIN, 0, 0},
+        {INT_MIN, INT_MAX, 0, 3},
+        {0, INT_MAX, 2, 3},
+    };
+    for (auto [lo, hi, first, last]: cases) {
+        long long ref = 0;
+        for (int i = first; i <= last; i++) {
+            if (lo <= extremes[i] and extremes[i] <= hi) {
+                ref++;
+            }
+        }
+        if (mst.count_in(first, last, lo, hi) != ref) {
+            printf("FAIL extreme lo=%d hi=%d\n", lo, hi);
+            return 1;
+        }
+        checks++;
+    }
+    vector<int> sorted_extremes = extremes;
+    sort(sorted_extremes.begin(), sorted_extremes.end());
+    for (int k = 1; k <= (int)sorted_extremes.size(); k++) {
+        if (mst.kth(0, (int)extremes.size() - 1, k) != sorted_extremes[k - 1]) {
+            printf("FAIL extreme kth k=%d\n", k);
+            return 1;
+        }
+        checks++;
+    }
     printf("merge-sort-segment-tree PASS %lld", checks);
     return 0;
 }

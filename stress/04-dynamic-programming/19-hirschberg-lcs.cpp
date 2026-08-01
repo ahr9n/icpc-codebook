@@ -24,6 +24,13 @@ int stress() {
     mt19937 rng(19);
     long long checks = 0;
 
+    string long_repeated(100000, 'x');
+    if (hirschberg(long_repeated, "x") != "x" or not hirschberg(long_repeated, "").empty()) {
+        printf("FAIL long-skinny\n");
+        return 1;
+    }
+    checks += 2;
+
     for (int trial = 0; trial < 6000; trial++) {
         int alphabet = 1 + rng() % 4;  // small alphabet -> longer shared subsequences
         int na = rng() % 9;
@@ -39,8 +46,10 @@ int stress() {
         }
 
         string got = hirschberg(a, b);
-        if ((long long)got.size() != ref or not is_subsequence(got, a) or not is_subsequence(got, b)) {
-            printf("FAIL string a=%s b=%s got=%s ref=%lld\n", a.c_str(), b.c_str(), got.c_str(), ref);
+        if ((long long)got.size() != ref or not is_subsequence(got, a) or
+            not is_subsequence(got, b)) {
+            printf("FAIL string a=%s b=%s got=%s ref=%lld\n", a.c_str(), b.c_str(), got.c_str(),
+                   ref);
             return 1;
         }
         checks++;

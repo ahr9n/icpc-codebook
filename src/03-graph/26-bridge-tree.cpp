@@ -32,8 +32,12 @@ struct BridgeTree {
 
     void unite(int u, int v) {
         u = find(u), v = find(v);
-        if (u == v) return;
-        if (sz[u] < sz[v]) swap(u, v);
+        if (u == v) {
+            return;
+        }
+        if (sz[u] < sz[v]) {
+            swap(u, v);
+        }
         par[v] = u;
         sz[u] += sz[v];
     }
@@ -42,47 +46,57 @@ struct BridgeTree {
         low[u] = num[u] = timer++;
 
         for (auto [v, id]: g[u]) {
-            if (id == parent_edge) continue;
+            if (id == parent_edge) {
+                continue;
+            }
             if (num[v] != -1) {
                 low[u] = min(low[u], num[v]);
                 continue;
             }
             dfs(v, id);
             low[u] = min(low[u], low[v]);
-            if (low[v] > num[u]) is_bridge[id] = true;
+            if (low[v] > num[u]) {
+                is_bridge[id] = true;
+            }
         }
     }
 
     void build() {
         is_bridge.assign(edge_count, false);
-        for (int u = 0; u < n; u++)
-            if (num[u] == -1) dfs(u, -1);
+        for (int u = 0; u < n; u++) {
+            if (num[u] == -1) {
+                dfs(u, -1);
+            }
+        }
 
-        for (int id = 0; id < edge_count; id++)
-            if (not is_bridge[id]) unite(edges[id].first, edges[id].second);
+        for (int id = 0; id < edge_count; id++) {
+            if (not is_bridge[id]) {
+                unite(edges[id].first, edges[id].second);
+            }
+        }
 
         comp.assign(n, -1);
         vector<int> label(n, -1);
         for (int v = 0; v < n; v++) {
             int root = find(v);
-            if (label[root] == -1) label[root] = num_comp++;
+            if (label[root] == -1) {
+                label[root] = num_comp++;
+            }
             comp[v] = label[root];
         }
 
         tree.assign(num_comp, {});
-        for (int id = 0; id < edge_count; id++)
+        for (int id = 0; id < edge_count; id++) {
             if (is_bridge[id]) {
                 int a = comp[edges[id].first], b = comp[edges[id].second];
                 tree[a].push_back(b);
                 tree[b].push_back(a);
             }
+        }
     }
 };
 
-/**
- * Example: two triangles joined by a single bridge edge collapse to two
- * component nodes linked by one tree edge.
- */
+/** Example: two triangles joined by one bridge collapse to two components. */
 int main() {
     BridgeTree bt(6);
     bt.add_edge(0, 1);
@@ -95,12 +109,18 @@ int main() {
     bt.build();
 
     int tree_edges = 0;
-    for (auto& adj: bt.tree) tree_edges += adj.size();
+    for (auto& adj: bt.tree) {
+        tree_edges += adj.size();
+    }
     tree_edges /= 2;
 
-    cout << bt.num_comp << "\n";                 // -> 2
-    cout << tree_edges << "\n";                  // -> 1
-    cout << (bt.comp[0] == bt.comp[2]) << "\n";  // -> 1
-    cout << (bt.comp[0] == bt.comp[3]) << "\n";  // -> 0
+    cout << bt.num_comp << "\n";
+    cout << tree_edges << "\n";
+    cout << (bt.comp[0] == bt.comp[2]) << "\n";
+    cout << (bt.comp[0] == bt.comp[3]) << "\n";
     return 0;
 }
+// -> 2
+// -> 1
+// -> 1
+// -> 0

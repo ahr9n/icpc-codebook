@@ -34,6 +34,26 @@ int stress() {
             checks++;
         }
     }
+
+    vector<int> extremes = {INT_MAX, 0, INT_MIN, INT_MAX, INT_MIN};
+    WaveletTree wt(extremes);
+    vector<int> sorted = extremes;
+    sort(sorted.begin(), sorted.end());
+    for (int k = 1; k <= (int)sorted.size(); k++) {
+        if (wt.kth(0, (int)extremes.size() - 1, k) != sorted[k - 1]) {
+            printf("FAIL extreme kth k=%d\n", k);
+            return 1;
+        }
+        checks++;
+    }
+    for (int x: {INT_MIN, -1, 0, INT_MAX}) {
+        int ref = upper_bound(sorted.begin(), sorted.end(), x) - sorted.begin();
+        if (wt.count_leq(0, (int)extremes.size() - 1, x) != ref) {
+            printf("FAIL extreme count x=%d\n", x);
+            return 1;
+        }
+        checks++;
+    }
     printf("wavelet-tree PASS %lld", checks);
     return 0;
 }

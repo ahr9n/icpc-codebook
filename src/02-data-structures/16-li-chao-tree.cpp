@@ -39,40 +39,50 @@ struct LiChao {
         bool better_at_lo = candidate.eval(lo) < lines[node].eval(lo);
         bool better_at_mid = candidate.eval(mid) < lines[node].eval(mid);
 
-        if (better_at_mid) swap(lines[node], candidate);
+        if (better_at_mid) {
+            swap(lines[node], candidate);
+        }
 
-        if (lo == hi) return;
+        if (lo == hi) {
+            return;
+        }
 
-        if (better_at_lo != better_at_mid)
+        if (better_at_lo != better_at_mid) {
             add_line(2 * node, lo, mid, candidate);
-        else
+        } else {
             add_line(2 * node + 1, mid + 1, hi, candidate);
+        }
     }
 
     long long query(int node, long long lo, long long hi, long long x) {
         long long here = lines[node].eval(x);
-        if (lo == hi) return here;
+        if (lo == hi) {
+            return here;
+        }
 
         long long mid = lo + (hi - lo) / 2;
-        if (x <= mid) return min(here, query(2 * node, lo, mid, x));
+        if (x <= mid) {
+            return min(here, query(2 * node, lo, mid, x));
+        }
         return min(here, query(2 * node + 1, mid + 1, hi, x));
     }
 };
 
-/**
- * Example: insert four lines over the domain [-10, 10] and query the lower
- * envelope at a few points.
- */
+/** Example: the lower envelope of four lines at four integer coordinates. */
 int main() {
     LiChao tree(-10, 10);
-    tree.add_line(Line{2, 3});    // y = 2x + 3
-    tree.add_line(Line{-1, 10});  // y = -x + 10
-    tree.add_line(Line{0, 1});    // y = 1
-    tree.add_line(Line{1, -4});   // y = x - 4
+    tree.add_line(Line{2, 3});
+    tree.add_line(Line{-1, 10});
+    tree.add_line(Line{0, 1});
+    tree.add_line(Line{1, -4});
 
-    cout << tree.query(-5) << "\n";  // -> -9
-    cout << tree.query(0) << "\n";   // -> -4
-    cout << tree.query(3) << "\n";   // -> -1
-    cout << tree.query(7) << "\n";   // -> 1
+    cout << tree.query(-5) << "\n";
+    cout << tree.query(0) << "\n";
+    cout << tree.query(3) << "\n";
+    cout << tree.query(7) << "\n";
     return 0;
 }
+// -> -9
+// -> -4
+// -> -1
+// -> 1

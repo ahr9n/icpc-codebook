@@ -14,8 +14,8 @@
 struct SqrtTree {
     int n, lg;
     vector<long long> v;
-    vector<int> seg_log;   // seg_log[layer] = log2 of that layer's segment length
-    vector<int> on_layer;  // on_layer[bit] = layer to use when l xor r tops out at 'bit'
+    vector<int> seg_log;
+    vector<int> on_layer;
     vector<vector<long long>> prefix, suffix, between;
 
     long long op(long long a, long long b) {
@@ -25,14 +25,18 @@ struct SqrtTree {
     SqrtTree(const vector<long long>& a) : v(a) {
         n = v.size();
         lg = 0;
-        while ((1 << lg) < n) lg++;  // smallest lg with 2^lg >= n; top segment covers all
+        while ((1 << lg) < n) {
+            lg++;
+        }
 
         on_layer.assign(lg + 1, 0);
         for (int len = lg; len > 1; len = (len + 1) / 2) {
             int layer = seg_log.size();
             seg_log.push_back(len);
             int block_log = (len + 1) / 2;
-            for (int bit = block_log; bit < len; bit++) on_layer[bit] = layer;
+            for (int bit = block_log; bit < len; bit++) {
+                on_layer[bit] = layer;
+            }
         }
 
         int layers = seg_log.size();
@@ -40,47 +44,55 @@ struct SqrtTree {
         prefix.assign(layers, vector<long long>(cap));
         suffix.assign(layers, vector<long long>(cap));
         between.assign(layers, vector<long long>(cap));
-        for (int layer = 0; layer < layers; layer++) build_layer(layer);
+        for (int layer = 0; layer < layers; layer++) {
+            build_layer(layer);
+        }
     }
 
     void build_layer(int layer) {
         int len = seg_log[layer];
         int block_log = (len + 1) / 2;
         int block_size = 1 << block_log;
-        int block_cnt_log = len / 2;  // 2^block_cnt_log blocks per segment
+        int block_count_log = len / 2;
 
         for (int start = 0; start < n; start += block_size) {
             int stop = min(start + block_size, n);
             prefix[layer][start] = v[start];
-            for (int i = start + 1; i < stop; i++)
+            for (int i = start + 1; i < stop; i++) {
                 prefix[layer][i] = op(prefix[layer][i - 1], v[i]);
+            }
             suffix[layer][stop - 1] = v[stop - 1];
-            for (int i = stop - 2; i >= start; i--)
+            for (int i = stop - 2; i >= start; i--) {
                 suffix[layer][i] = op(v[i], suffix[layer][i + 1]);
+            }
         }
 
         int seg_size = 1 << len;
         for (int seg = 0; seg < n; seg += seg_size) {
-            int seg_end = min(seg + seg_size, n);  // blocks past here belong to later segments
-            for (int i = 0; seg + (i << block_log) < seg_end; i++) {
+            int segment_end = min(seg + seg_size, n);
+            for (int i = 0; seg + (i << block_log) < segment_end; i++) {
                 long long acc = 0;
-                for (int j = i; seg + (j << block_log) < seg_end; j++) {
+                for (int j = i; seg + (j << block_log) < segment_end; j++) {
                     long long block_val = suffix[layer][seg + (j << block_log)];
                     acc = (i == j) ? block_val : op(acc, block_val);
-                    between[layer][seg + (i << block_cnt_log) + j] = acc;
+                    between[layer][seg + (i << block_count_log) + j] = acc;
                 }
             }
         }
     }
 
     long long query(int l, int r) {
-        if (l == r) return v[l];
-        if (l + 1 == r) return op(v[l], v[r]);
+        if (l == r) {
+            return v[l];
+        }
+        if (l + 1 == r) {
+            return op(v[l], v[r]);
+        }
 
         int layer = on_layer[__lg(l ^ r)];
         int len = seg_log[layer];
         int block_log = (len + 1) / 2;
-        int block_cnt_log = len / 2;
+        int block_count_log = len / 2;
         int seg = (l >> len) << len;
         int block_l = (l - seg) >> block_log;
         int block_r = (r - seg) >> block_log;
@@ -88,21 +100,23 @@ struct SqrtTree {
         long long ans = suffix[layer][l];
         if (block_r - block_l > 1) {
             int lo = block_l + 1, hi = block_r - 1;
-            ans = op(ans, between[layer][seg + (lo << block_cnt_log) + hi]);
+            ans = op(ans, between[layer][seg + (lo << block_count_log) + hi]);
         }
         return op(ans, prefix[layer][r]);
     }
 };
 
-/**
- * Example: build over an array, then answer four O(1) inclusive range-min queries.
- */
+/** Example: four inclusive range-minimum queries on a static array. */
 int main() {
     vector<long long> a = {5, 2, 8, 1, 9, 3, 7, 4};
     SqrtTree st(a);
-    cout << st.query(0, 2) << "\n";  // -> 2
-    cout << st.query(2, 5) << "\n";  // -> 1
-    cout << st.query(4, 7) << "\n";  // -> 3
-    cout << st.query(6, 7) << "\n";  // -> 4
+    cout << st.query(0, 2) << "\n";
+    cout << st.query(2, 5) << "\n";
+    cout << st.query(4, 7) << "\n";
+    cout << st.query(6, 7) << "\n";
     return 0;
 }
+// -> 2
+// -> 1
+// -> 3
+// -> 4

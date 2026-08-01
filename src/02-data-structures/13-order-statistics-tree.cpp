@@ -18,23 +18,29 @@ using namespace __gnu_pbds;
  * duplicates) key on a pair<value, unique_tag> — e.g. insert {value, timer++}
  * so equal values stay distinct — then query order_of_key({x, 0}).
  */
-using ordered_set = tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update>;
+using OrderedSet = tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update>;
 
+/** Example: k-th elements and strict ranks in a five-element ordered set. */
 int main() {
-    ordered_set s;
+    OrderedSet ordered;
     for (int x: {5, 1, 3, 8, 2}) {
-        s.insert(x);
+        ordered.insert(x);
     }
-    // sorted view: {1, 2, 3, 5, 8}
+    cout << *ordered.find_by_order(0) << '\n';
+    cout << *ordered.find_by_order(2) << '\n';
+    cout << *ordered.find_by_order(4) << '\n';
 
-    cout << *s.find_by_order(0) << '\n';  // -> 1
-    cout << *s.find_by_order(2) << '\n';  // -> 3
-    cout << *s.find_by_order(4) << '\n';  // -> 8
-
-    cout << s.order_of_key(5) << '\n';    // -> 3
-    cout << s.order_of_key(4) << '\n';    // -> 3
-    cout << s.order_of_key(1) << '\n';    // -> 0
-    cout << s.order_of_key(100) << '\n';  // -> 5
+    cout << ordered.order_of_key(5) << '\n';
+    cout << ordered.order_of_key(4) << '\n';
+    cout << ordered.order_of_key(1) << '\n';
+    cout << ordered.order_of_key(100) << '\n';
 
     return 0;
 }
+// -> 1
+// -> 3
+// -> 8
+// -> 3
+// -> 3
+// -> 0
+// -> 5

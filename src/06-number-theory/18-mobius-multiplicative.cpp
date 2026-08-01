@@ -9,7 +9,8 @@
  * then gcd(i, p) = 1 and f(i * p) = f(i) * f(p); if p divides i then i * p gains
  * a higher power of p and the value follows f's rule on prime powers (for mu the
  * repeated prime forces 0, for phi it multiplies by p). We stop at the first p
- * dividing i so every composite is written exactly once, by its spf.
+ * dividing i so every composite is written exactly once, by its spf. Contract:
+ * n >= 1.
  */
 struct MultiplicativeSieve {
     vector<int> spf, primes, mu, phi;
@@ -30,7 +31,9 @@ MultiplicativeSieve multiplicative_sieve(int n) {
             s.phi[i] = i - 1;
         }
         for (int p: s.primes) {
-            if ((long long)i * p > n) break;
+            if ((long long)i * p > n) {
+                break;
+            }
             s.spf[i * p] = p;
             if (i % p == 0) {
                 s.mu[i * p] = 0;
@@ -49,17 +52,23 @@ MultiplicativeSieve multiplicative_sieve(int n) {
  * iff no d > 1 with d*d dividing it, so by inclusion-exclusion over squared prime
  * factors the count is sum_{d >= 1} mu[d] * floor(n / (d*d)). Terms vanish once
  * d*d > n, so mu up to floor(sqrt n) suffices. O(sqrt n) given the sieve.
+ * Contract: n >= 0 and s was built through at least floor(sqrt(n)).
  */
 long long count_squarefree(long long n, const MultiplicativeSieve& s) {
     long long total = 0;
-    for (long long d = 1; d * d <= n; d++) total += (long long)s.mu[d] * (n / (d * d));
+    for (long long d = 1; d <= n / d; d++) {
+        total += (long long)s.mu[d] * (n / (d * d));
+    }
     return total;
 }
 
+/** Example: print initial Möbius values and two squarefree counts. */
 int main() {
     MultiplicativeSieve s = multiplicative_sieve(1000);
 
-    for (int i = 1; i <= 10; i++) cout << s.mu[i] << " ";
+    for (int i = 1; i <= 10; i++) {
+        cout << s.mu[i] << " ";
+    }
     cout << "\n";  // -> 1 -1 -1 0 -1 1 -1 0 0 1
 
     cout << count_squarefree(10, s) << "\n";   // -> 7

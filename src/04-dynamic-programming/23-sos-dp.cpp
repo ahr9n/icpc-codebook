@@ -5,29 +5,37 @@
  * O(bits * 2^bits): one pass per bit, adding the value of the mask with that
  * bit cleared. Doing it bit-by-bit is what turns the naive O(3^bits)
  * submask enumeration into O(bits * 2^bits) — each bit is folded once.
- * Flip the += direction (over_zeta) to sum over supersets instead. These are
- * the zeta transforms underlying subset convolution and Mobius inversion.
+ * superset_zeta performs the analogous sum over all supersets. Contract:
+ * 0 <= bits < 31, a.size() == 2^bits, and every transformed sum fits in
+ * long long.
  */
 void subset_zeta(vector<long long>& a, int bits) {
-    for (int b = 0; b < bits; b++)
-        for (int mask = 0; mask < (1 << bits); mask++)
-            if (mask & (1 << b)) a[mask] += a[mask ^ (1 << b)];
+    for (int bit = 0; bit < bits; bit++) {
+        for (int mask = 0; mask < (1 << bits); mask++) {
+            if (mask & (1 << bit)) {
+                a[mask] += a[mask ^ (1 << bit)];
+            }
+        }
+    }
 }
 
 void superset_zeta(vector<long long>& a, int bits) {
-    for (int b = 0; b < bits; b++)
-        for (int mask = 0; mask < (1 << bits); mask++)
-            if (not(mask & (1 << b))) a[mask] += a[mask | (1 << b)];
+    for (int bit = 0; bit < bits; bit++) {
+        for (int mask = 0; mask < (1 << bits); mask++) {
+            if (not(mask & (1 << bit))) {
+                a[mask] += a[mask | (1 << bit)];
+            }
+        }
+    }
 }
 
-/**
- * Example: bits = 3, a[mask] = mask. f[0b111] sums a over all 8 submasks
- * (0..7 = 28); f[0b101] sums a[0], a[1], a[4], a[5] = 10.
- */
+/** Example: subset and superset sums over all three-bit masks. */
 int main() {
     int bits = 3;
     vector<long long> a(1 << bits);
-    for (int mask = 0; mask < (1 << bits); mask++) a[mask] = mask;
+    for (int mask = 0; mask < (1 << bits); mask++) {
+        a[mask] = mask;
+    }
 
     vector<long long> f = a;
     subset_zeta(f, bits);

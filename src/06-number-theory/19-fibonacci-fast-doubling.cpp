@@ -7,12 +7,16 @@
  * returning the pair {F(n), F(n+1)} so each halving of n is one call.
  */
 pair<long long, long long> fib_pair(long long n) {
-    if (n == 0) return {0, 1 % MOD};
-    auto [f, g] = fib_pair(n >> 1);  // f = F(k), g = F(k+1) with k = n/2
+    if (n == 0) {
+        return {0, 1 % MOD};
+    }
+    auto [f, g] = fib_pair(n >> 1);
     long long two_g_minus_f = (2 * g - f + 2 * MOD) % MOD;
     long long even = f * two_g_minus_f % MOD;
     long long odd = (f * f + g * g) % MOD;
-    if (n & 1) return {odd, (even + odd) % MOD};
+    if (n & 1) {
+        return {odd, (even + odd) % MOD};
+    }
     return {even, odd};
 }
 
@@ -20,6 +24,7 @@ long long fib(long long n) {
     return fib_pair(n).first;
 }
 
+/** Example: Fibonacci numbers at indices 10, 50, and 100 modulo MOD. */
 int main() {
     cout << fib(10) << "\n";
     cout << fib(50) << "\n";

@@ -15,14 +15,12 @@
  * advancing the tortoise), which matters when evaluating f is expensive.
  */
 struct RhoShape {
-    int cycle_start;   // first node on the cycle reached from start
-    long long mu;      // tail length: steps before entering the cycle
-    long long lambda;  // cycle length
+    int cycle_start;
+    long long mu;
+    long long lambda;
 };
 
 RhoShape find_cycle(const vector<int>& f, int start) {
-    // Phase 1: the hare gains one step of lead per round, so it eventually laps
-    // the tortoise inside the cycle; the collision node is somewhere on it.
     int tortoise = f[start];
     int hare = f[f[start]];
     while (tortoise != hare) {
@@ -30,8 +28,6 @@ RhoShape find_cycle(const vector<int>& f, int start) {
         hare = f[f[hare]];
     }
 
-    // Phase 2: start and the collision node are an exact number of laps apart,
-    // so advancing both at unit speed makes them meet at the cycle entrance.
     long long mu = 0;
     tortoise = start;
     while (tortoise != hare) {
@@ -41,7 +37,6 @@ RhoShape find_cycle(const vector<int>& f, int start) {
     }
     int cycle_start = tortoise;
 
-    // Phase 3: hold one pointer on the entrance and walk the other around once.
     long long lambda = 1;
     hare = f[cycle_start];
     while (hare != cycle_start) {
@@ -52,13 +47,11 @@ RhoShape find_cycle(const vector<int>& f, int start) {
     return {cycle_start, mu, lambda};
 }
 
-/**
- * Example: rho with tail 0 -> 1 -> 2 and cycle 2 -> 3 -> 4 -> 2 started at 0, so
- * the cycle begins at node 2 after a tail of length 2 and has length 3.
- */
+/** Example: a two-node tail entering a cycle of length three. */
 int main() {
     vector<int> f = {1, 2, 3, 4, 2};
     RhoShape r = find_cycle(f, 0);
-    cout << r.cycle_start << " " << r.mu << " " << r.lambda << "\n";  // -> 2 2 3
+    cout << r.cycle_start << " " << r.mu << " " << r.lambda << "\n";
     return 0;
 }
+// -> 2 2 3

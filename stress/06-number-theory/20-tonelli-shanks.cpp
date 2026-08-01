@@ -13,7 +13,8 @@ int stress() {
     vector<long long> primes;
     for (long long p = 3; p <= 500; p++)
         if (is_small_prime(p)) primes.push_back(p);
-    for (long long p: {1009LL, 1013LL, 5003LL, 10007LL, 99991LL, 999983LL})
+    for (long long p: {1009LL, 1013LL, 5003LL, 10007LL, 99991LL, 999983LL, 998244353LL,
+                       1000000007LL, 2305843009213693951LL})
         primes.push_back(p);
 
     long long checks = 0;

@@ -5,6 +5,8 @@
  *   kth(l, r, k)       k-th smallest value in index range [l, r], k is 1-based
  *   count_leq(l, r, x) how many elements in [l, r] are <= x
  * Index range [l, r] is 0-based and inclusive; values may be negative.
+ * Contract: the input array is non-empty and queries satisfy l <= r and
+ * 1 <= k <= r - l + 1.
  *
  * A node owns a value band [lo, hi] and holds its slice of the array. Elements
  * with value <= mid recurse left, the rest recurse right (a stable partition, so
@@ -21,8 +23,10 @@ struct WaveletNode {
 
     WaveletNode(vector<int>::iterator from, vector<int>::iterator to, int lo, int hi)
         : lo(lo), hi(hi) {
-        if (lo == hi or from == to) return;
-        int mid = lo + (hi - lo) / 2;
+        if (lo == hi or from == to) {
+            return;
+        }
+        int mid = lo + ((long long)hi - lo) / 2;
         left_count.reserve((to - from) + 1);
         left_count.push_back(0);
         for (auto it = from; it != to; ++it) {
@@ -35,7 +39,9 @@ struct WaveletNode {
     }
 
     int kth(int l, int r, int k) {
-        if (lo == hi) return lo;
+        if (lo == hi) {
+            return lo;
+        }
         int in_left = left_count[r] - left_count[l - 1];
         if (k <= in_left) {
             return left->kth(left_count[l - 1] + 1, left_count[r], k);
@@ -46,8 +52,12 @@ struct WaveletNode {
     }
 
     int count_leq(int l, int r, int x) {
-        if (l > r or x < lo) return 0;
-        if (hi <= x) return r - l + 1;
+        if (l > r or x < lo) {
+            return 0;
+        }
+        if (hi <= x) {
+            return r - l + 1;
+        }
         int left_l = left_count[l - 1] + 1;
         int left_r = left_count[r];
         int right_l = l - left_count[l - 1];
@@ -74,19 +84,21 @@ struct WaveletTree {
     }
 };
 
-/**
- * Example: an array with negatives and duplicates; k-th smallest and <= x counts
- * over sub-ranges.
- */
+/** Example: k-th-smallest and threshold-count queries with duplicates. */
 int main() {
     vector<int> values = {3, -1, 4, 1, 5, -1, 2, 3};
 
     WaveletTree wt(values);
 
-    cout << wt.kth(0, 7, 1) << "\n";        // -> -1
-    cout << wt.kth(0, 7, 4) << "\n";        // -> 2
-    cout << wt.kth(2, 5, 2) << "\n";        // -> 1
-    cout << wt.count_leq(0, 7, 3) << "\n";  // -> 6
-    cout << wt.count_leq(2, 5, 1) << "\n";  // -> 2
+    cout << wt.kth(0, 7, 1) << "\n";
+    cout << wt.kth(0, 7, 4) << "\n";
+    cout << wt.kth(2, 5, 2) << "\n";
+    cout << wt.count_leq(0, 7, 3) << "\n";
+    cout << wt.count_leq(2, 5, 1) << "\n";
     return 0;
 }
+// -> -1
+// -> 2
+// -> 1
+// -> 6
+// -> 2

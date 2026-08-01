@@ -66,6 +66,34 @@ int stress() {
         checks++;
     }
 
+    // Wide coefficients make the cross products exceed 64 bits while every
+    // queried line value remains representable.
+    for (int trial = 0; trial < 2000; trial++) {
+        int lines = 3 + rng() % 20;
+        vector<long long> slope(lines), intercept(lines);
+        long long m = 5000000000000LL;
+        ConvexHullTrick hull;
+        for (int i = 0; i < lines; i++) {
+            m -= 100000000000LL + (long long)(rng() % 500000) * 1000000;
+            long long b = ((long long)(rng() % 8000001) - 4000000) * 1000000;
+            slope[i] = m;
+            intercept[i] = b;
+            hull.add_line(m, b);
+        }
+
+        for (long long x = -3; x <= 3; x++) {
+            long long ref = LINF;
+            for (int i = 0; i < lines; i++) {
+                ref = min(ref, slope[i] * x + intercept[i]);
+            }
+            if (hull.query(x) != ref) {
+                printf("FAIL wide trial=%d x=%lld\n", trial, x);
+                return 1;
+            }
+            checks++;
+        }
+    }
+
     printf("convex-hull-trick PASS %lld", checks);
     return 0;
 }
