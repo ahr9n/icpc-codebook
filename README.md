@@ -13,23 +13,28 @@ any snippet copies on its own, and carries a worked `main()` demo.
 ```
 src/
   01-template/            contest template (includes, consts, fast IO, main)
-  02-data-structures/     DSU, segment trees (iter/recursive/lazy), Fenwick/BIT,
-                          sparse table, difference array, 2D prefix sums, MO's,
-                          monotonic stack (histogram) + queue (sliding-window min)
-  03-graph/               BFS/DFS/0-1-BFS, shortest paths, MST, topo, SCC, bridges,
-                          LCA, tree diameter, cycles, Euler tour, 2-SAT,
-                          Euler circuit/path (Hierholzer), HLD, centroid decomp
-  04-dynamic-programming/ knapsack, LCS/LIS, interval, matrix-chain, bitmask,
-                          tree, digit, games (iterative + recursive versions)
+  02-data-structures/     DSU, segment trees (iter/recursive/lazy/beats/2D/persistent/
+                          merge-sort/Li-Chao), Fenwick/BIT (1D+2D), sparse table,
+                          sqrt tree, wavelet tree, treap + pb_ds order-statistics,
+                          difference array, 2D prefix sums, MO's, monotonic stack/queue
+  03-graph/               BFS/DFS/0-1-BFS, shortest paths (+ path counting), MST, topo,
+                          SCC, bridges, biconnected/block-cut/bridge tree, LCA, tree
+                          diameter, cycles (+ min-mean), Euler tour, 2-SAT, Hierholzer,
+                          HLD, centroid decomp, DSU-on-tree (small-to-large)
+  04-dynamic-programming/ knapsack, LCS/LIS, interval, matrix-chain, bitmask, tree,
+                          digit, games, backtracking, Hirschberg (linear-memory LCS),
+                          DP optimizations (convex-hull trick, divide & conquer, Knuth)
   05-strings/             KMP, Z, hashing, trie, Manacher, suffix array + LCP, LCE,
                           Aho-Corasick, suffix automaton
-  06-number-theory/       modpow, inverse, sieves, factorize, phi, ext-gcd, CRT, nCr,
-                          Catalan, Lucas, inclusion-exclusion,
+  06-number-theory/       modpow, inverse, sieves, factorize, phi, Möbius/multiplicative,
+                          ext-gcd, CRT, nCr, Catalan, Lucas, inclusion-exclusion,
                           Miller-Rabin, Pollard's rho
   07-geometry/            point primitives, orientation, polygons, convex hull,
-                          closest pair (line sweep)
+                          line/circle & circle/circle intersection, circle construction
+                          (circumcircle + min-enclosing), closest pair (line sweep)
   08-flow/                Dinic max-flow, Kuhn + Hopcroft-Karp matching,
-                          min-cost max-flow (SPFA), Hungarian assignment
+                          min-cost max-flow (SPFA), Hungarian assignment,
+                          difference constraints
   09-math/                matrix exponentiation, big integer arithmetic,
                           Gaussian elimination, XOR (linear) basis, FFT, NTT
   10-bitmask/             bit ops, lowest-bit, gray code, subset/submask enumeration
