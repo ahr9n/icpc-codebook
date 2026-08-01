@@ -70,6 +70,15 @@ int stress() {
     }
     checks++;
 
+    vector<Halfplane> single_point = box;
+    single_point.push_back(make_halfplane({43, -2}, {43, -3}));
+    single_point.push_back(make_halfplane({-12, -45}, {-13, -44}));
+    if (not halfplane_intersection(single_point).empty()) {
+        printf("FAIL zero-area intersection\n");
+        return 1;
+    }
+    checks++;
+
     for (int rep = 0; rep < 8000; rep++) {
         vector<Halfplane> planes = box;
         int extra = rng() % 13;
@@ -83,7 +92,9 @@ int stress() {
             planes.push_back(make_halfplane(a, a + dir));
             if (rng() % 5 == 0) planes.push_back(planes.back());
         }
-        shuffle(planes.begin(), planes.end(), rng);
+        for (int i = (int)planes.size() - 1; i > 0; i--) {
+            swap(planes[i], planes[rng() % (i + 1)]);
+        }
         if (not verify_hpi(planes)) return 1;
         checks++;
     }

@@ -123,6 +123,13 @@ vector<Point> halfplane_intersection(vector<Halfplane> planes) {
     for (int i = 0; i < m; i++) {
         poly[i] = line_intersection(dq[i], dq[(i + 1) % m]);
     }
+    double twice_area = 0;
+    for (int i = 1; i + 1 < m; i++) {
+        twice_area += cross(poly[i] - poly[0], poly[i + 1] - poly[0]);
+    }
+    if (twice_area <= EPS) {
+        return {};
+    }
     return poly;
 }
 
