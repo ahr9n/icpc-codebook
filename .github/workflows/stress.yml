@@ -28,7 +28,7 @@ jobs:
           g++ --version
 
       - name: Check C++ formatting
-        run: find src stress -name '*.cpp' -print0 | xargs -0 clang-format-17 --dry-run --Werror
+        run: find src stress -name '*.cpp' -print0 | xargs -0 clang-format-17 --style=file --dry-run --Werror
 
       - name: Run stress suite
         run: stress/run.sh

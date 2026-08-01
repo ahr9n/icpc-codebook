@@ -5,8 +5,10 @@ int stress() {
     long long checks = 0;
 
     int resets = 0;
-    vector<int> empty =
-        parallel_binary_search(0, 0, [&]() { resets++; }, [&](int) {}, [&](int) { return false; });
+    auto reset_empty = [&]() { resets++; };
+    auto ignore_update = [](int) {};
+    auto never_satisfied = [](int) { return false; };
+    vector<int> empty = parallel_binary_search(0, 0, reset_empty, ignore_update, never_satisfied);
     if (not empty.empty() or resets != 1) {
         printf("parallel-binary-search FAIL(empty)\n");
         return 1;
