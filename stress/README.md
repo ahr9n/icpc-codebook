@@ -22,6 +22,7 @@ stress/run.sh sqrt-tree  # only harnesses whose path contains "sqrt-tree"
 
 Exits nonzero if any harness fails to compile or reports a mismatch.
 
-The GNU-only policy-based order-statistics tree is compiled with Homebrew
-`g++-15` when available and reported as skipped on toolchains without GNU
-`pb_ds`; every other listing uses `clang++` through the repository shim.
+The GNU-only policy-based order-statistics tree uses the first available GNU
+`g++` (including versioned Homebrew binaries); every other listing uses
+`clang++` through the repository shim. A missing GNU compiler is a local skip
+but a CI failure, so the GitHub Actions run always exercises every harness.

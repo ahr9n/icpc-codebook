@@ -46,6 +46,19 @@ int __lg_(int x){return 31 - __builtin_clz(x);}
 '
 filter="${1:-}"
 pass=0; fail=0; skip=0
+
+gnu_compiler=""
+for candidate in g++-15 g++-14 g++-13 g++-12; do
+  if command -v "$candidate" >/dev/null; then
+    gnu_compiler="$candidate"
+    break
+  fi
+done
+if [ -z "$gnu_compiler" ] && command -v g++ >/dev/null &&
+   ! g++ --version | head -1 | grep -qi clang; then
+  gnu_compiler=g++
+fi
+
 for h in $(find "$ROOT/stress" -name '*.cpp' | sort); do
   rel=${h#"$ROOT"/stress/}
   [ -n "$filter" ] && case "$rel" in *"$filter"*) ;; *) continue;; esac
@@ -53,10 +66,14 @@ for h in $(find "$ROOT/stress" -name '*.cpp' | sort); do
   if [ ! -f "$src" ]; then echo "MISSING-SRC $rel"; fail=$((fail+1)); continue; fi
   compiler=clang++
   if [[ "$rel" == *"13-order-statistics-tree.cpp" ]]; then
-    if command -v g++-15 >/dev/null; then
-      compiler=g++-15
+    if [ -n "$gnu_compiler" ]; then
+      compiler="$gnu_compiler"
+    elif [ "${CI:-false}" = "true" ]; then
+      echo "FAIL(toolchain) $rel   GNU g++ is required for pb_ds"
+      fail=$((fail+1))
+      continue
     else
-      echo "SKIP  $rel   GNU g++-15 is required for pb_ds"
+      echo "SKIP  $rel   GNU g++ is required for pb_ds"
       skip=$((skip+1))
       continue
     fi
