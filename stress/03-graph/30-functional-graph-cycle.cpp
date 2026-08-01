@@ -25,9 +25,8 @@ int check(const vector<int>& f, int start, long long& checks) {
     RhoShape got = find_cycle(f, start);
     RhoShape ref = naive_cycle(f, start);
     if (not same(got, ref)) {
-        printf("FAIL n=%d start=%d got(%d,%lld,%lld) ref(%d,%lld,%lld)\n",
-               (int)f.size(), start, got.cycle_start, got.mu, got.lambda,
-               ref.cycle_start, ref.mu, ref.lambda);
+        printf("FAIL n=%d start=%d got(%d,%lld,%lld) ref(%d,%lld,%lld)\n", (int)f.size(), start,
+               got.cycle_start, got.mu, got.lambda, ref.cycle_start, ref.mu, ref.lambda);
         return 1;
     }
     checks++;
@@ -39,8 +38,8 @@ int stress() {
     long long checks = 0;
 
     // Hand-built edge cases.
-    if (check({0}, 0, checks)) return 1;              // self-loop
-    if (check({1, 0}, 0, checks)) return 1;           // 2-cycle
+    if (check({0}, 0, checks)) return 1;     // self-loop
+    if (check({1, 0}, 0, checks)) return 1;  // 2-cycle
     if (check({1, 0}, 1, checks)) return 1;
     if (check({1, 2, 3, 4, 2}, 0, checks)) return 1;  // pure tail into cycle
     if (check({1, 2, 3, 0}, 2, checks)) return 1;     // whole graph one cycle

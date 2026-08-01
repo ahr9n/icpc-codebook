@@ -21,10 +21,14 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v6
 
-      - name: Show compiler versions
+      - name: Show tool versions
         run: |
           clang++ --version
+          clang-format-17 --version
           g++ --version
+
+      - name: Check C++ formatting
+        run: find src stress -name '*.cpp' -print0 | xargs -0 clang-format-17 --dry-run --Werror
 
       - name: Run stress suite
         run: stress/run.sh

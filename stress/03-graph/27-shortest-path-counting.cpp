@@ -23,8 +23,7 @@ int stress() {
         bd[0] = 0;
         for (int it = 0; it < n; it++)
             for (auto& e: es)
-                if (bd[e[0]] < LINF and bd[e[0]] + e[2] < bd[e[1]])
-                    bd[e[1]] = bd[e[0]] + e[2];
+                if (bd[e[0]] < LINF and bd[e[0]] + e[2] < bd[e[1]]) bd[e[1]] = bd[e[0]] + e[2];
 
         for (int v = 0; v < n; v++)
             if (bd[v] != dist[v]) {

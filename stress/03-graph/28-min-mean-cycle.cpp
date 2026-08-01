@@ -24,22 +24,21 @@ int stress() {
         bool brute_has = false;
         long double best = 0;
         vector<char> vis(n, 0);
-        function<void(int, int, long long, int)> dfs =
-            [&](int s, int u, long long sum, int len) {
-                for (auto [to, w]: g[u]) {
-                    if (to == s) {
-                        long double mm = (long double)(sum + w) / (len + 1);
-                        if (not brute_has or mm < best) {
-                            best = mm;
-                            brute_has = true;
-                        }
-                    } else if (to > s and not vis[to]) {
-                        vis[to] = 1;
-                        dfs(s, to, sum + w, len + 1);
-                        vis[to] = 0;
+        function<void(int, int, long long, int)> dfs = [&](int s, int u, long long sum, int len) {
+            for (auto [to, w]: g[u]) {
+                if (to == s) {
+                    long double mm = (long double)(sum + w) / (len + 1);
+                    if (not brute_has or mm < best) {
+                        best = mm;
+                        brute_has = true;
                     }
+                } else if (to > s and not vis[to]) {
+                    vis[to] = 1;
+                    dfs(s, to, sum + w, len + 1);
+                    vis[to] = 0;
                 }
-            };
+            }
+        };
         for (int s = 0; s < n; s++) {
             vis[s] = 1;
             dfs(s, s, 0, 0);

@@ -11,8 +11,8 @@ static long long cross2(Point a, Point b, Point c) {
 
 static bool on_segment(Point a, Point b, Point p) {
     if (cross2(a, b, p) != 0) return false;
-    return min(a.x, b.x) <= p.x and p.x <= max(a.x, b.x) and
-           min(a.y, b.y) <= p.y and p.y <= max(a.y, b.y);
+    return min(a.x, b.x) <= p.x and p.x <= max(a.x, b.x) and min(a.y, b.y) <= p.y and
+           p.y <= max(a.y, b.y);
 }
 
 static bool on_boundary(vector<Point>& poly, Point p) {

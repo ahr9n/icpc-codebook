@@ -56,8 +56,7 @@ int stress() {
             return x;
         };
         for (int id = 0; id < (int)es.size(); id++)
-            if (not bt.is_bridge[id])
-                par[find(es[id].first)] = find(es[id].second);
+            if (not bt.is_bridge[id]) par[find(es[id].first)] = find(es[id].second);
         for (int a = 0; a < n; a++)
             for (int b = 0; b < n; b++) {
                 bool same_brute = find(a) == find(b);

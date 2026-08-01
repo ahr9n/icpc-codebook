@@ -28,7 +28,8 @@ int stress() {
                 }
 
         if (got != ref[g][size]) {
-            printf("FAIL trial=%d n=%d g=%d got=%lld ref=%lld\n", trial, size, g, got, ref[g][size]);
+            printf("FAIL trial=%d n=%d g=%d got=%lld ref=%lld\n", trial, size, g, got,
+                   ref[g][size]);
             return 1;
         }
         checks++;

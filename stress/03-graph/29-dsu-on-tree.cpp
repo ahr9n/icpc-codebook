@@ -35,8 +35,7 @@ int stress() {
 
         for (int u = 0; u < n; u++)
             if (want[u] != answer[u]) {
-                printf("dsu-on-tree FAIL rep=%d u=%d want=%d got=%d\n", rep, u,
-                       want[u], answer[u]);
+                printf("dsu-on-tree FAIL rep=%d u=%d want=%d got=%d\n", rep, u, want[u], answer[u]);
                 return 1;
             }
 
